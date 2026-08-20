@@ -1,0 +1,19 @@
+[package]
+name = "company_analysis"
+version = "0.1.0"
+edition = "2024"
+rust-version = "1.95.0"
+license = "Apache-2.0"
+publish = false
+
+[dependencies]
+ailoy = { git = "https://github.com/brekkylab/ailoy", rev = "2596f3bad7239101744213b84475986b38aea864" }
+anyhow = "1"
+dotenvy = "0.15"
+futures = "0.3"
+tokio = { version = "1", features = ["macros", "rt-multi-thread"] }
+
+# `ailoy` pulls `cortex` in as a sibling path dependency, which does not exist
+# inside its git checkout — pin the same source here so the git dep resolves.
+[patch."https://github.com/brekkylab/ailoy"]
+cortex = { git = "https://github.com/brekkylab/cortex", rev = "5da0e4d029d5bd3e258d224c3ffa5aaa3088f2f9" }
