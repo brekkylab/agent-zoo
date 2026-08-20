@@ -1,0 +1,21 @@
+{
+ "status": "000",
+ "message": "정상",
+ "corp_code": "99000512",
+ "corp_name": "한울캐피탈(주)",
+ "corp_name_eng": "HANUL CAPITAL CO., LTD",
+ "stock_name": "한울캐피탈",
+ "stock_code": "",
+ "ceo_nm": "서정민",
+ "corp_cls": "E",
+ "jurir_no": "1101119900512",
+ "bizr_no": "9995007890",
+ "adres": "서울특별시 영등포구 국제금융로 10 (여의도동)",
+ "hm_url": "www.hanul-capital.example",
+ "ir_url": "www.hanul-capital.example/ir",
+ "phn_no": "02-3775-2200",
+ "fax_no": "02-3775-2209",
+ "induty_code": "64992",
+ "est_dt": "20140317",
+ "acc_mt": "12"
+}

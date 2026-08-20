@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<result>
+  <list>
+    <corp_code>99000101</corp_code>
+    <corp_name>한울소재</corp_name>
+    <corp_eng_name>HANUL MATERIALS CO., LTD</corp_eng_name>
+    <stock_code>999101</stock_code>
+    <modify_date>20040611</modify_date>
+  </list>
+  <list>
+    <corp_code>99000204</corp_code>
+    <corp_name>대진화학</corp_name>
+    <corp_eng_name>DAEJIN CHEMICAL CO.,LTD</corp_eng_name>
+    <stock_code> </stock_code>
+    <modify_date>19970218</modify_date>
+  </list>
+  <list>
+    <corp_code>99000318</corp_code>
+    <corp_name>대진화학</corp_name>
+    <corp_eng_name>DAEJIN CHEMICAL CO., LTD.</corp_eng_name>
+    <stock_code> </stock_code>
+    <modify_date>20120905</modify_date>
+  </list>
+  <list>
+    <corp_code>99000427</corp_code>
+    <corp_name>성진정밀</corp_name>
+    <corp_eng_name>SUNGJIN PRECISION INC</corp_eng_name>
+    <stock_code> </stock_code>
+    <modify_date>20081103</modify_date>
+  </list>
+  <list>
+    <corp_code>99000512</corp_code>
+    <corp_name>한울캐피탈</corp_name>
+    <corp_eng_name>HANUL CAPITAL CO., LTD</corp_eng_name>
+    <stock_code> </stock_code>
+    <modify_date>20140317</modify_date>
+  </list>
+</result>

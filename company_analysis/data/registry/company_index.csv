@@ -1,0 +1,13 @@
+company_id,lei,corp_code,cik,primary_source,country
+kr-hanul-materials,0000HANULMAT00001A90,99000101,,dart,KR
+kr-daejin-chem,0000DAEJINCHM0002B65,99000204,,dart,KR
+kr-daejin-chem-cosmetic,0000DAEJINCOS0003C97,99000318,,dart,KR
+kr-sungjin-precision,,99000427,,dart,KR
+kr-hanul-capital,0000HANULCAP0005DA76,99000512,,dart,KR
+jp-sakuragawa-kasei,0000SAKURAGAWA006E70,,,gleif,JP
+cn-jinhe-chem,0000JINHECHEM007FG67,,,gleif,CN
+cn-beifang-lithium,0000BEIFANGLI008GH09,,,gleif,CN
+cn-beifeng-lithium,0000BEIFENGLI009HJ09,,,gleif,CN
+cn-yuxi-mining,0000YUXIMINING10JK21,,,gleif,CN
+cn-tianyuan-holdings,0000TIANYUANH11KLA63,,,gleif,CN
+us-northgate-cells,0000NORTHGATE12LMA77,,9900000101,edgar,US

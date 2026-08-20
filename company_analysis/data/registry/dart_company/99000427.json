@@ -1,0 +1,21 @@
+{
+ "status": "000",
+ "message": "정상",
+ "corp_code": "99000427",
+ "corp_name": "주식회사 성진정밀",
+ "corp_name_eng": "SUNGJIN PRECISION INC",
+ "stock_name": "성진정밀",
+ "stock_code": "",
+ "ceo_nm": "최도현",
+ "corp_cls": "E",
+ "jurir_no": "1101119900427",
+ "bizr_no": "9994003456",
+ "adres": "경상남도 김해시 골든루트로 88번길 21",
+ "hm_url": "www.sungjin-precision.example",
+ "ir_url": "",
+ "phn_no": "055-320-6600",
+ "fax_no": "055-320-6609",
+ "induty_code": "29199",
+ "est_dt": "20081103",
+ "acc_mt": "12"
+}

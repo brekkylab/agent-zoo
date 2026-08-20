@@ -1,0 +1,21 @@
+{
+ "status": "000",
+ "message": "정상",
+ "corp_code": "99000204",
+ "corp_name": "(주)대진화학",
+ "corp_name_eng": "DAEJIN CHEMICAL CO.,LTD",
+ "stock_name": "대진화학",
+ "stock_code": "",
+ "ceo_nm": "박선우",
+ "corp_cls": "E",
+ "jurir_no": "1101119900204",
+ "bizr_no": "9992005678",
+ "adres": "울산광역시 남구 여천로 332",
+ "hm_url": "www.daejin-chem.example",
+ "ir_url": "",
+ "phn_no": "052-277-3400",
+ "fax_no": "052-277-3409",
+ "induty_code": "201",
+ "est_dt": "19970218",
+ "acc_mt": "12"
+}

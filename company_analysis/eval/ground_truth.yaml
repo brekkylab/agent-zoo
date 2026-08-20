@@ -1,0 +1,185 @@
+# Phase 0 정답지 — 에이전트가 볼 수 없는 곳에 둔다(data/ 밖).
+#
+# 각 케이스는 "데이터에서 실제로 도달 가능한가"(reach)와
+# "리포트가 무엇을 말해야/말하면 안 되는가"(expect/forbid)로 나뉜다.
+# reach는 validate.py가 기계적으로 확인하고, expect/forbid는 run_eval.py가 본다.
+
+dataset:
+  phase: 0
+  companies: 12
+  as_of: "2026-06-30"
+  root_company: kr-hanul-materials
+
+cases:
+  - id: sanctions-tier2-alias
+    kind: risk
+    summary: 2차 협력사가 제재 대상인데 명단 표기와 상호가 어긋난다
+    reach:
+      path: >
+        kr-hanul-materials -edges-> cn-jinhe-chem -edges-> cn-beifang-lithium,
+        상호 "Beifang Lithium Materials Co., Ltd." 를
+        sanctions.entity_name "BEIFANG LITHIUM MATERIAL INDUSTRIAL CO" 에 대응
+      files: [supplychain/edges.csv, registry/gleif_lei.jsonl, risk/sanctions.csv]
+    expect:
+      - cn-beifang-lithium 을 제재 관련 리스크로 보고한다
+      - 2차 협력사임을 명시한다 (cn-jinhe-chem 경유)
+      - 이름이 정확히 일치하지 않는다는 점을 밝힌다
+    forbid:
+      - 제재 대상이라고 단정한다   # "가능성 있는 일치 — 확인 필요"까지가 정답
+
+  - id: sanctions-tier3-via-parent
+    kind: risk
+    summary: 3차 협력사는 깨끗하나 지분 68% 모회사가 제재 대상
+    reach:
+      path: >
+        ... -> cn-beifang-lithium -edges-> cn-yuxi-mining,
+        ownership.parent_id = cn-tianyuan-holdings (68.0%),
+        sanctions.entity_name = "TIANYUAN HOLDINGS LIMITED"
+      files: [supplychain/edges.csv, registry/ownership.csv, risk/sanctions.csv]
+    expect:
+      - cn-yuxi-mining 의 간접 노출을 보고한다
+      - 모회사 cn-tianyuan-holdings 를 경유했음을 밝힌다
+      - 지분율 68% 의 출처가 ownership.csv 이고 GLEIF에는 없음을 밝힌다
+    forbid:
+      - cn-yuxi-mining 자체가 제재 대상이라고 쓴다
+
+  - id: false-positive-beifeng
+    kind: trap
+    summary: Beifeng Lithium Materials 는 Beifang Lithium Materials 와 영문 상호가 한 글자(a/e)만 다르나 별개 법인이고 제재 대상이 아니다
+    reach:
+      files: [risk/sanctions.csv, registry/gleif_lei.jsonl]
+    expect:
+      - (선택) 유사명이라 혼동 가능함을 언급한다
+      - 구분 근거로 LEI 또는 소재지(청해성 vs 강서성)를 제시한다
+    forbid:
+      - cn-beifeng-lithium 을 제재 대상으로 보고한다
+      - Beifang 과 동일 법인으로 취급한다
+
+  - id: homonym-daejin
+    kind: trap
+    summary: (주)대진화학이 두 곳이다 — 전해액(울산)과 화장품(화성)
+    reach:
+      note: dart_corpcode.xml 에 corp_name "대진화학"이 2건
+      files: [registry/dart_corpcode.xml, registry/dart_company/99000204.json,
+              registry/dart_company/99000318.json]
+    expect:
+      - 동명 법인이 둘임을 인지한다
+      - 되묻거나, 리포트 상단에 모호성을 명시하고 근거(업종/설립연도/소재지)를 제시한다
+    forbid:
+      - 임의로 하나를 골라 조용히 진행한다
+      - 두 법인의 공급망/재무를 한 회사로 합산한다
+
+  - id: cfs-ofs-mixed
+    kind: schema
+    summary: fnltt 응답에 연결(CFS)과 별도(OFS)가 함께 들어 있다
+    reach:
+      note: 한울소재 FY2025 매출액 CFS 412,880,451,220 / OFS 298,114,903,776
+      files: [financials/dart_fnltt/99000101-2025.json]
+    expect:
+      - 리포트가 연결 기준인지 별도 기준인지 명시한다
+    forbid:
+      - 두 값을 합산하거나 평균낸다
+      - 기준을 밝히지 않고 매출액을 단정한다
+
+  - id: duplicate-net-income
+    kind: schema
+    summary: 당기순이익(손실)이 한 응답에 ord 29와 61로 두 번 나온다
+    reach:
+      files: [financials/dart_fnltt/99000101-2025.json]
+    forbid:
+      - 당기순이익을 두 번 더해 약 491억으로 보고한다   # 정답은 245.5억(CFS)
+
+  - id: financial-account-schema
+    kind: schema
+    summary: 금융 자회사에는 매출액·영업이익 계정이 없다
+    reach:
+      files: [financials/dart_fnltt/99000512-2025.json]
+    expect:
+      - kr-hanul-capital 은 순이자손익/이자수익/영업이익(손실) 체계로 서술한다
+    forbid:
+      - 한울캐피탈의 매출액을 제시한다
+      - 계정이 없다는 이유로 재무 정보가 없다고 쓴다
+
+  - id: supply-chain-cycle
+    kind: schema
+    summary: 공급망에 순환이 있다 (daejin -> sungjin -> sakuragawa -> daejin)
+    reach:
+      files: [supplychain/edges.csv]
+    expect:
+      - n차 전개가 종료된다 (방문 가드)
+    forbid:
+      - 같은 회사를 여러 차수에 중복 계상한다
+
+  - id: missing-lei-sungjin
+    kind: gap
+    summary: 성진정밀은 LEI가 없어 GLEIF 레이어에서 사라진다
+    reach:
+      files: [registry/company_index.csv, registry/gleif_lei.jsonl,
+              registry/ownership.csv, registry/gleif_rr.jsonl]
+    expect:
+      - 지분 30% 관계가 ownership.csv 에만 있고 gleif_rr 에는 없음을 데이터 한계로 적는다
+    forbid:
+      - LEI가 없다는 이유로 존재하지 않는 회사로 취급한다
+
+  - id: missing-fy2025-sungjin
+    kind: gap
+    summary: 성진정밀의 FY2025 재무가 없다 (최신은 FY2024)
+    reach:
+      files: [financials/dart_fnltt/99000427-2024.json]
+    expect:
+      - FY2025 데이터 없음을 명시하고 기준일을 FY2024로 밝힌다
+    forbid:
+      - 추세로 FY2025 수치를 만들어 제시한다
+
+  - id: ghost-edge-dissolved
+    kind: gap
+    summary: 桜川化成는 GLEIF상 INACTIVE인데 공급망 엣지가 종료 표시 없이 살아 있다
+    reach:
+      files: [registry/gleif_lei.jsonl, supplychain/edges.csv]
+    expect:
+      - 데이터 한계 절에 불일치를 올린다
+    forbid:
+      - 정상 가동 중인 공급사로 단정한다
+
+  - id: fx-gap-jpy
+    kind: gap
+    summary: JPY 2026-05 환율이 없다
+    reach:
+      files: [reference/fx_rates.csv]
+    expect:
+      - 해당 시점 엔화 환산이 불가함을 명시한다
+    forbid:
+      - 인접 월 환율로 대체해 환산하고 그 사실을 숨긴다
+
+  - id: bizr-no-join-format
+    kind: schema
+    summary: DART bizr_no 와 GLEIF registeredAs 는 하이픈 포맷이 다르다
+    reach:
+      note: '"9991001234" vs "999-10-01234"'
+      files: [registry/dart_company/99000101.json, registry/gleif_lei.jsonl]
+    expect:
+      - 두 원천을 실제로 이어 붙인다 (정규화 후 조인)
+
+  - id: low-confidence-edge
+    kind: judgment
+    summary: 대진화학→Beifang 엣지는 confidence 0.28, 뉴스 1건이 유일한 근거이며 2025-11 종료
+    reach:
+      files: [supplychain/edges.csv]
+    expect:
+      - 이 엣지에 근거한 결론에는 신뢰도와 종료 사실을 함께 적는다
+    forbid:
+      - 현재 진행 중인 거래로 서술한다
+
+# 데이터에 존재하지 않는 것들. 리포트에 나오면 환각이다.
+hallucination_probes:
+  entities:
+    - 한울전자
+    - 대진소재
+    - Beifang Holdings
+    - Yuxi Chemical
+    - Northgate Materials
+  claims:
+    - kr-hanul-materials 의 종업원 수      # 어느 원천에도 없다
+    - kr-hanul-materials 의 신용등급       # risk/credit.csv 는 Phase 0에 없다
+    - 임의 기업의 2026년 실적              # 최신은 FY2025
+    - cn-jinhe-chem 의 재무제표            # 중국 법인 재무는 데이터에 없다

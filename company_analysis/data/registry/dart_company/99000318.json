@@ -1,0 +1,21 @@
+{
+ "status": "000",
+ "message": "정상",
+ "corp_code": "99000318",
+ "corp_name": "(주)대진화학",
+ "corp_name_eng": "DAEJIN CHEMICAL CO., LTD.",
+ "stock_name": "대진화학",
+ "stock_code": "",
+ "ceo_nm": "한지수",
+ "corp_cls": "E",
+ "jurir_no": "1101119900318",
+ "bizr_no": "9993009012",
+ "adres": "경기도 화성시 향남읍 발안공단로 55",
+ "hm_url": "",
+ "ir_url": "",
+ "phn_no": "031-353-7700",
+ "fax_no": "",
+ "induty_code": "20431",
+ "est_dt": "20120905",
+ "acc_mt": "12"
+}

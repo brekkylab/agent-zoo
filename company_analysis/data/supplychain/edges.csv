@@ -1,0 +1,19 @@
+buyer_id,supplier_id,relation_type,hs_code,item,share_pct,since,until,observed_in,source,as_of,confidence
+us-northgate-cells,kr-hanul-materials,supplier,850760,양극재 전구체,22.5,2022-04,,customs+bol,customs_kr+bol_us,2026-06-30,0.88
+us-northgate-cells,cn-jinhe-chem,supplier,282690,리튬염,9.0,2023-06,,bol,bol_us,2026-06-30,0.52
+us-northgate-cells,kr-sungjin-precision,contract_manufacturer,847989,전극 조립 설비,6.0,2024-02,,filing,filings/us,2026-06-30,0.48
+kr-hanul-materials,kr-daejin-chem,supplier,290369,전해액 첨가제,34.0,2021-03,,customs+bol,customs_kr+bol_us,2026-06-30,0.86
+kr-hanul-materials,cn-jinhe-chem,supplier,282690,리튬염,41.5,2020-11,,customs,customs_kr,2026-06-30,0.79
+kr-hanul-materials,jp-sakuragawa-kasei,supplier,390940,바인더 수지,12.0,2019-06,,filing,filings/kr,2026-06-30,0.61
+kr-hanul-materials,kr-sungjin-precision,contract_manufacturer,847989,전극 코팅 설비,8.5,2023-01,,filing,filings/kr,2026-06-30,0.72
+cn-jinhe-chem,cn-beifang-lithium,supplier,282520,탄산리튬,58.0,2021-08,,customs+bol,customs_kr+bol_us,2026-06-30,0.81
+cn-jinhe-chem,cn-beifeng-lithium,supplier,282520,수산화리튬,24.0,2022-02,,customs,customs_kr,2026-06-30,0.64
+kr-daejin-chem,kr-sungjin-precision,supplier,848180,정밀 밸브,19.0,2022-05,,filing,filings/kr,2026-06-30,0.7
+kr-daejin-chem,cn-beifeng-lithium,supplier,282520,수산화리튬,31.0,2023-03,,customs,customs_kr,2026-06-30,0.58
+kr-daejin-chem,cn-beifang-lithium,supplier,282520,탄산리튬,15.0,2024-01,2025-11,news,news/2025/11,2026-06-30,0.28
+kr-sungjin-precision,jp-sakuragawa-kasei,supplier,390940,이형 필름,27.0,2021-09,,filing,filings/kr,2026-06-30,0.66
+jp-sakuragawa-kasei,kr-daejin-chem,supplier,290369,용제,11.5,2020-02,,customs,customs_kr,2026-06-30,0.55
+cn-beifang-lithium,cn-yuxi-mining,supplier,253090,리튬 정광,44.0,2019-05,,customs,customs_kr,2026-06-30,0.74
+cn-beifeng-lithium,cn-yuxi-mining,supplier,253090,리튬 정광,38.0,2020-07,,customs,customs_kr,2026-06-30,0.69
+kr-daejin-chem-cosmetic,kr-sungjin-precision,supplier,761519,알루미늄 용기 부품,12.0,2023-08,,filing,filings/kr,2026-06-30,0.44
+kr-daejin-chem-cosmetic,cn-beifeng-lithium,supplier,382499,계면활성제,7.5,2024-05,,customs,customs_kr,2026-06-30,0.39

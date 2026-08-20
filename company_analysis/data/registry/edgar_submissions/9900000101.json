@@ -1,0 +1,161 @@
+{
+ "cik": "9900000101",
+ "entityType": "operating",
+ "sic": "3691",
+ "sicDescription": "Storage Batteries",
+ "ownerOrg": "04 Manufacturing",
+ "insiderTransactionForOwnerExists": 0,
+ "insiderTransactionForIssuerExists": 1,
+ "name": "NORTHGATE CELLS, INC.",
+ "tickers": [
+  "NGCL"
+ ],
+ "exchanges": [
+  "Nasdaq"
+ ],
+ "ein": "990123456",
+ "lei": "0000NORTHGATE12LMA77",
+ "description": "",
+ "website": "",
+ "investorWebsite": "",
+ "category": "Large accelerated filer",
+ "fiscalYearEnd": "1231",
+ "stateOfIncorporation": "DE",
+ "stateOfIncorporationDescription": "DE",
+ "addresses": {
+  "mailing": {
+   "street1": "4400 INDUSTRIAL PKWY",
+   "street2": null,
+   "city": "RENO",
+   "stateOrCountry": "NV",
+   "zipCode": "89506",
+   "stateOrCountryDescription": "NV",
+   "isForeignLocation": 0,
+   "foreignStateTerritory": null,
+   "country": null,
+   "countryCode": null
+  },
+  "business": {
+   "street1": "4400 INDUSTRIAL PKWY",
+   "street2": null,
+   "city": "RENO",
+   "stateOrCountry": "NV",
+   "zipCode": "89506",
+   "stateOrCountryDescription": "NV",
+   "isForeignLocation": 0,
+   "foreignStateTerritory": null,
+   "country": null,
+   "countryCode": null
+  }
+ },
+ "phone": "775-555-0142",
+ "flags": "",
+ "formerNames": [
+  {
+   "name": "NORTHGATE ENERGY STORAGE INC",
+   "from": "2016-02-01T05:00:00.000Z",
+   "to": "2021-06-14T04:00:00.000Z"
+  }
+ ],
+ "filings": {
+  "recent": {
+   "accessionNumber": [
+    "9900000101-26-000031",
+    "9900000101-26-000007",
+    "9900000101-25-000009",
+    "9900000101-24-000012"
+   ],
+   "filingDate": [
+    "2026-05-07",
+    "2026-02-18",
+    "2025-02-19",
+    "2024-02-21"
+   ],
+   "reportDate": [
+    "2025-12-31",
+    "2025-12-31",
+    "2024-12-31",
+    "2023-12-31"
+   ],
+   "acceptanceDateTime": [
+    "2026-05-07T16:31:02.000Z",
+    "2026-02-18T17:04:55.000Z",
+    "2025-02-19T16:48:11.000Z",
+    "2024-02-21T17:12:39.000Z"
+   ],
+   "act": [
+    "34",
+    "34",
+    "34",
+    "34"
+   ],
+   "form": [
+    "10-K/A",
+    "10-K",
+    "10-K",
+    "10-K"
+   ],
+   "fileNumber": [
+    "001-40912",
+    "001-40912",
+    "001-40912",
+    "001-40912"
+   ],
+   "filmNumber": [
+    "",
+    "261204418",
+    "251188203",
+    "241166057"
+   ],
+   "items": [
+    "",
+    "",
+    "",
+    ""
+   ],
+   "core_type": [
+    "10-K/A",
+    "10-K",
+    "10-K",
+    "10-K"
+   ],
+   "size": [
+    1884112,
+    4552330,
+    4118775,
+    3880446
+   ],
+   "isXBRL": [
+    1,
+    1,
+    1,
+    1
+   ],
+   "isInlineXBRL": [
+    1,
+    1,
+    1,
+    1
+   ],
+   "isXBRLNumeric": [
+    1,
+    1,
+    1,
+    1
+   ],
+   "primaryDocument": [
+    "ngcl-20251231a.htm",
+    "ngcl-20251231.htm",
+    "ngcl-20241231.htm",
+    "ngcl-20231231.htm"
+   ],
+   "primaryDocDescription": [
+    "10-K/A",
+    "10-K",
+    "10-K",
+    "10-K"
+   ]
+  },
+  "files": []
+ }
+}

@@ -1,0 +1,21 @@
+{
+ "status": "000",
+ "message": "정상",
+ "corp_code": "99000101",
+ "corp_name": "한울소재(주)",
+ "corp_name_eng": "HANUL MATERIALS CO., LTD",
+ "stock_name": "한울소재",
+ "stock_code": "999101",
+ "ceo_nm": "정하윤, 오세진",
+ "corp_cls": "K",
+ "jurir_no": "1101119900101",
+ "bizr_no": "9991001234",
+ "adres": "충청북도 청주시 흥덕구 대신로 187 (강서동)",
+ "hm_url": "www.hanul-materials.example",
+ "ir_url": "",
+ "phn_no": "043-260-1100",
+ "fax_no": "043-260-1109",
+ "induty_code": "20119",
+ "est_dt": "20040611",
+ "acc_mt": "12"
+}

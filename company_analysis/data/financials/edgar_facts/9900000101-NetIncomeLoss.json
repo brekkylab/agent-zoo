@@ -1,0 +1,34 @@
+{
+ "cik": 9900000101,
+ "taxonomy": "us-gaap",
+ "tag": "NetIncomeLoss",
+ "label": "NetIncomeLoss",
+ "description": "Mock NetIncomeLoss concept.",
+ "entityName": "NORTHGATE CELLS, INC.",
+ "units": {
+  "USD": [
+   {
+    "start": "2024-01-01",
+    "end": "2024-12-31",
+    "val": -44119000,
+    "accn": "9900000101-25-000009",
+    "fy": 2024,
+    "fp": "FY",
+    "form": "10-K",
+    "filed": "2025-02-19",
+    "frame": "CY2024"
+   },
+   {
+    "start": "2025-01-01",
+    "end": "2025-12-31",
+    "val": 58772000,
+    "accn": "9900000101-26-000007",
+    "fy": 2025,
+    "fp": "FY",
+    "form": "10-K",
+    "filed": "2026-02-18",
+    "frame": "CY2025"
+   }
+  ]
+ }
+}

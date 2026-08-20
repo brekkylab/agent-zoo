@@ -1,0 +1,4 @@
+parent_id,child_id,share_pct,basis,gleif_rr,as_of,note
+cn-tianyuan-holdings,cn-yuxi-mining,68.0,filing-disclosed,yes,2026-06-30,모회사가 제재 대상. 자회사 자체는 명단에 없다
+kr-hanul-materials,kr-hanul-capital,51.0,filing-disclosed,yes,2026-06-30,연결 대상 금융 자회사
+kr-hanul-materials,kr-sungjin-precision,30.0,filing-disclosed,no,2026-06-30,지분 30%. 성진정밀에 LEI가 없어 gleif_rr.jsonl에는 대응 레코드가 없다
