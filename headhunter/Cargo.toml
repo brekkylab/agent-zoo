@@ -14,8 +14,8 @@ publish = false
 # committed run log was produced with. Pin the revisions here once they land.
 #
 # Until then this directory is the source, the data, and the evidence of one
-# real run. See `run-2.console` for the terminal capture and `SCENARIO.md` for
-# what happened in it.
+# real run. See `run_result/console.txt` for the terminal capture and
+# `run_result/SCENARIO.md` for what happened in it.
 
 [dependencies]
 ailoy = { git = "https://github.com/brekkylab/ailoy", branch = "feat/bedrock-wire" }

@@ -41,7 +41,7 @@ kill two traps at once.
 ## What happened in one run
 
 Run of 2026-08-21 against `eval/jd/backend-rust.md`, a Rust backend role on a payments
-settlement platform. Full capture in [`run-2.console`](run-2.console).
+settlement platform. Full capture in [`console.txt`](console.txt).
 
 The agent read `skill_distribution` before searching anything. Rust is spelled seven
 ways in this pool, and the view says so:
@@ -122,12 +122,16 @@ than passing it silently.
 ## Output
 
 ```
-run-2/backend-rust/
+run_result/
   00-shortlist.md      picks, method, and rejections with reasons
   01-하은-성.md          one cold mail per pick, in rank order
   02-reese-whitlock.md
   03-채원-노.md
 ```
+
+The capture in `console.txt` shows these files being written under `run-2/`, which is what
+`--out` was set to when the run happened. The directory was renamed afterwards; the
+contents are untouched.
 
 Each mail is written in the candidate's `profile_language`. Two came out Korean and one
 English, which the data decided, not a setting.
@@ -139,7 +143,7 @@ instruction requires a `<!-- rejected -->` marker, and the scorer reads what fol
 ## Scoring
 
 ```console
-$ python3 eval/run_eval.py --score run-2/backend-rust
+$ python3 eval/run_eval.py --score run_result
 ```
 
 This run had no automatic failures and twelve items flagged for human review. The
@@ -153,7 +157,7 @@ rejections answers it.
 $ export AILOY_CORTEX_CONSOLE=../../../cortex/target/debug/cortex-local-console
 $ cd examples/headhunter
 $ python3 sql/load.py
-$ cargo run -p headhunter -- --jd eval/jd/backend-rust.md --out run-2 --k 3
+$ cargo run -p headhunter -- --jd eval/jd/backend-rust.md --out run_result --k 3
 ```
 
 The default model is `bedrock/global.anthropic.claude-sonnet-5`. Pass
