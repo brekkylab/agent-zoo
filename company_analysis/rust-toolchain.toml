@@ -1,0 +1,4 @@
+# ailoy와 이 크레이트의 rust-version이 1.95.0이고, 기본 stable이 그보다 낮은
+# 환경에서도 `cargo run`이 그냥 되도록 고정한다.
+[toolchain]
+channel = "1.97.1"

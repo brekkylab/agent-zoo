@@ -24,12 +24,14 @@ use crate::{
     prompt::{Paths, Preset},
 };
 
-/// Bedrock 추론 프로파일. foundation model id는 on-demand 호출이 거부된다.
-const DEFAULT_MODEL: &str = "bedrock/global.anthropic.claude-sonnet-5";
+const DEFAULT_MODEL: &str = "anthropic/claude-sonnet-5";
 
 /// 명령은 호스트에서 직접 실행된다. `data/` 읽기 전용은 격리가 아니라
 /// [`guard`]의 사후 검출로만 보장된다.
 const CONSOLE_PROGRAM: &str = "cortex-local-console";
+
+/// `build.rs`가 `cargo install`로 받아둔 콘솔 서버 경로.
+const CONSOLE_INSTALLED: &str = env!("CORTEX_CONSOLE");
 
 struct Args {
     task: Option<String>,
@@ -109,10 +111,8 @@ company_analysis — 기업정보 데이터 레이크 조사 에이전트
   --workspace <경로>   기본 ./workspace
   --model <id>         기본 {DEFAULT_MODEL}
 
-인증은 .env의 AWS_BEARER_TOKEN_BEDROCK + AWS_REGION.
-사용 가능한 모델(추론 프로파일) 목록:
-  curl -H \"Authorization: Bearer $AWS_BEARER_TOKEN_BEDROCK\" \\
-       https://bedrock.$AWS_REGION.amazonaws.com/inference-profiles",
+인증은 .env의 ANTHROPIC_API_KEY (anthropic/* 모델),
+또는 AWS_BEARER_TOKEN_BEDROCK + AWS_REGION (bedrock/* 모델).",
         presets = Preset::ALL.join(" | "),
     );
 }
@@ -276,7 +276,10 @@ async fn main() -> Result<()> {
         .context("에이전트 조립")?;
 
     println!("모델 {}", args.model);
-    println!("콘솔 {CONSOLE_PROGRAM} (호스트에서 직접 실행 — 위반은 사후 검출뿐이다)");
+    println!(
+        "콘솔 {} (호스트에서 직접 실행 — 위반은 사후 검출뿐이다)",
+        console_program()
+    );
     println!("트리 {}", tree.display());
     println!("작업 {}\n", slug);
 
@@ -402,25 +405,32 @@ fn list_files(dir: &Path) -> Vec<PathBuf> {
     out
 }
 
+/// 콘솔 서버 바이너리. `$AILOY_CORTEX_CONSOLE` > `build.rs`가 설치한 것 > `PATH` 순.
+fn console_program() -> String {
+    if let Ok(path) = std::env::var("AILOY_CORTEX_CONSOLE") {
+        return path;
+    }
+    if Path::new(CONSOLE_INSTALLED).is_file() {
+        return CONSOLE_INSTALLED.to_string();
+    }
+    CONSOLE_PROGRAM.to_string()
+}
+
 /// 빌트인 툴은 콘솔 없이는 실행되지 않는다.
-///
-/// 서버 바이너리는 `cortex` 형제 체크아웃에 있고 `PATH`에 없으므로,
-/// `$AILOY_CORTEX_CONSOLE`로 경로를 지정할 수 있게 둔다.
 ///
 /// 트리를 따로 선언하지 않는다. 이 서버는 마운트가 없으면 자신의 `current_dir()`을
 /// 세션 디렉터리로 삼고, 이 프로세스의 cwd가 곧 트리이므로 결과가 같다.
 async fn console() -> Result<Console> {
-    let program = std::env::var("AILOY_CORTEX_CONSOLE")
-        .unwrap_or_else(|_| CONSOLE_PROGRAM.to_string());
+    let program = console_program();
     let mut console = Console::builder()
         .stdio_client(&[&program])
         .build()
         .await
         .with_context(|| {
             format!(
-                "콘솔 서버 '{program}' 실행 실패. cortex 체크아웃에서 \
-                 `cargo build -p {CONSOLE_PROGRAM}` 후 $AILOY_CORTEX_CONSOLE로 \
-                 경로를 지정해라."
+                "콘솔 서버 '{program}' 실행 실패. `cargo build`가 \
+                 cortex-local-console를 설치하지 못했을 수 있다 — \
+                 직접 빌드한 바이너리가 있으면 $AILOY_CORTEX_CONSOLE로 지정해라."
             )
         })?;
     console.start().await.context("콘솔 시작")?;
@@ -440,12 +450,25 @@ fn ensure_provider(model: &str) -> Result<()> {
     drop(providers);
 
     // 등록이 안 됐다면 환경변수를 짚어 무엇이 빠졌는지 알려준다.
-    if model.starts_with("bedrock/") {
-        let key = std::env::var("AWS_BEARER_TOKEN_BEDROCK").unwrap_or_default();
-        if key.trim().is_empty() {
+    for (prefix, var, hint) in [
+        (
+            "anthropic/",
+            "ANTHROPIC_API_KEY",
+            "console.anthropic.com > API keys 에서 발급한다.",
+        ),
+        (
+            "bedrock/",
+            "AWS_BEARER_TOKEN_BEDROCK",
+            "Bedrock 콘솔 > API keys 에서 발급한다.",
+        ),
+    ] {
+        if !model.starts_with(prefix) {
+            continue;
+        }
+        if std::env::var(var).unwrap_or_default().trim().is_empty() {
             bail!(
-                "AWS_BEARER_TOKEN_BEDROCK이 비어 있다. .env를 채워라 (.env.example 참조).\n\
-                 Bedrock 콘솔 > API keys 에서 발급한다."
+                "{var}이 비어 있다. .env를 채워라 (.env.example 참조).\n\
+                 {hint}"
             );
         }
     }
