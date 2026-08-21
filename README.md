@@ -10,5 +10,5 @@ configuration, and its own `README.md`. This file is the table of contents.
 
 | Agent | Description |
 | --- | --- |
-| [company_analysis](./company_analysis) | — |
-| [headhunter](./headhunter) | — |
+| [Company Analysis](./company_analysis) | An AI agent that runs corporate due diligence and supply-chain risk investigation over a data lake |
+| [Headhunter](./headhunter) | An AI agent that turns a job description into a shortlist and cold mails over an SQL talent pool |
