@@ -1,0 +1,182 @@
+{
+  "run_id": "1787281225-한울소재-due-diligence",
+  "task": "한울소재(kr-hanul-materials) 거래 전 실사: 실체 확인, 지분·실소유 구조, 제재·소송 이력, 재무 건전성, 관계사 네트워크",
+  "entities": [
+    {
+      "company_id": "kr-hanul-materials",
+      "name_ko": "한울소재(주)",
+      "name_en": "HANUL MATERIALS CO., LTD",
+      "country": "KR",
+      "corp_code": "99000101",
+      "lei": "0000HANULMAT00001A90",
+      "role": "조사 대상(주체)"
+    },
+    {
+      "company_id": "kr-hanul-capital",
+      "name_ko": "한울캐피탈(주)",
+      "name_en": "HANUL CAPITAL CO., LTD",
+      "country": "KR",
+      "corp_code": "99000512",
+      "lei": "0000HANULCAP0005DA76",
+      "role": "51% 지분 연결대상 자회사(금융업)"
+    },
+    {
+      "company_id": "kr-sungjin-precision",
+      "name_ko": "성진정밀",
+      "name_en": "SUNGJIN PRECISION INC",
+      "country": "KR",
+      "corp_code": "99000427",
+      "lei": null,
+      "role": "30% 지분 관계사 겸 위탁가공 공급사"
+    },
+    {
+      "company_id": "kr-daejin-chem",
+      "name_ko": "대진화학",
+      "name_en": "DAEJIN CHEMICAL CO.,LTD",
+      "country": "KR",
+      "corp_code": "99000204",
+      "role": "1차 공급사(전해액 첨가제)"
+    },
+    {
+      "company_id": "cn-jinhe-chem",
+      "name_ko": "金河化学工业有限公司",
+      "name_en": "Jinhe Chemical Industrial Co., Ltd.",
+      "country": "CN",
+      "lei": "0000JINHECHEM007FG67",
+      "role": "1차 공급사(리튬염)"
+    },
+    {
+      "company_id": "cn-beifang-lithium",
+      "name_ko": "北方锂业材料有限公司",
+      "name_en": "Beifang Lithium Materials Co., Ltd.",
+      "country": "CN",
+      "lei": "0000BEIFANGLI008GH09",
+      "role": "2차 간접 공급사, 제재 명단 이름 유사 후보"
+    },
+    {
+      "company_id": "cn-beifeng-lithium",
+      "name_ko": "北风锂业材料有限公司",
+      "name_en": "Beifeng Lithium Materials Co., Ltd.",
+      "country": "CN",
+      "lei": "0000BEIFENGLI009HJ09",
+      "role": "2차 간접 공급사, 제재 명단 이름 유사 후보(혼동 위험)"
+    },
+    {
+      "company_id": "cn-yuxi-mining",
+      "name_ko": "玉溪矿业集团有限公司",
+      "name_en": "Yuxi Mining Group Co., Ltd.",
+      "country": "CN",
+      "lei": "0000YUXIMINING10JK21",
+      "role": "3차 간접 공급사, 제재 후보 기업의 68% 피지배 자회사"
+    },
+    {
+      "company_id": "cn-tianyuan-holdings",
+      "name_ko": "天源控股有限公司",
+      "name_en": "Tianyuan Holdings Ltd.",
+      "country": "CN",
+      "lei": "0000TIANYUANH11KLA63",
+      "role": "cn-yuxi-mining의 68% 지분 모회사, 제재 명단 이름 유사 후보"
+    },
+    {
+      "company_id": "jp-sakuragawa-kasei",
+      "name_ko": "사쿠라가와화성(추정)",
+      "country": "JP",
+      "role": "1차 공급사(바인더 수지)"
+    },
+    {
+      "company_id": "us-northgate-cells",
+      "name_ko": "노스게이트셀즈(추정)",
+      "country": "US",
+      "role": "최종 고객사(양극재 전구체 매입)"
+    }
+  ],
+  "findings": [
+    {
+      "severity": "info",
+      "statement": "한울소재는 DART bizr_no(9991001234)와 GLEIF registeredAs(999-10-01234, 하이픈 제거 시 일치)로 실체가 교차확인된다.",
+      "evidence": ["data/registry/dart_company/99000101.json", "data/registry/gleif_lei.jsonl"],
+      "confidence": "high"
+    },
+    {
+      "severity": "info",
+      "statement": "한울소재는 한울캐피탈 지분 51%(연결대상, GLEIF RR 관계와 방향 일치)와 성진정밀 지분 30%를 보유한다.",
+      "evidence": ["data/registry/ownership.csv", "data/registry/gleif_rr.jsonl"],
+      "confidence": "high"
+    },
+    {
+      "severity": "medium",
+      "statement": "한울소재의 최대주주/실소유주(개인 또는 지주회사)에 대한 정보가 데이터셋에 존재하지 않아 확인할 수 없다.",
+      "evidence": ["data/registry/ownership.csv"],
+      "confidence": "n/a (data gap)"
+    },
+    {
+      "severity": "low",
+      "statement": "한울소재 본사는 제재 명단(sanctions.csv, 7건) 대비 이름 유사도 매칭에서 일치 후보가 없다.",
+      "evidence": ["data/risk/sanctions.csv", "data/registry/dart_company/99000101.json", "data/registry/gleif_lei.jsonl"],
+      "confidence": "high"
+    },
+    {
+      "severity": "medium",
+      "statement": "가능성 있는 일치 — 확인 필요: cn-beifang-lithium(北方锂业材料) 및 cn-beifeng-lithium(北风锂业材料)이 이름 유사도 0.77~0.87로 MOCK-SDN 명단의 'BEIFANG LITHIUM MATERIAL INDUSTRIAL CO'와 유사하며, 둘 다 한울소재의 2단계 간접 공급사다. 두 후보 중 어느 쪽이 실제 대상인지, 혹은 둘 다 무관한지는 이름만으로 판단 불가.",
+      "evidence": ["data/risk/sanctions.csv", "data/registry/gleif_lei.jsonl", "data/supplychain/edges.csv"],
+      "confidence": "medium (name-similarity only)"
+    },
+    {
+      "severity": "medium",
+      "statement": "가능성 있는 일치 — 확인 필요: cn-tianyuan-holdings(天源控股)가 이름 유사도 0.89~0.91로 MOCK-SDN 명단의 'TIANYUAN HOLDINGS LIMITED'와 유사하며, ownership.csv에 따라 한울소재의 3단계 간접 공급사인 cn-yuxi-mining의 지분 68%를 보유한 모회사다.",
+      "evidence": ["data/risk/sanctions.csv", "data/registry/ownership.csv", "data/supplychain/edges.csv"],
+      "confidence": "medium (name-similarity only)"
+    },
+    {
+      "severity": "low",
+      "statement": "한울소재 소송·행정처분·안전사고 이력은 데이터셋에 해당 소스가 없어 확인 불가.",
+      "evidence": [],
+      "confidence": "n/a (data gap)"
+    },
+    {
+      "severity": "info",
+      "statement": "한울소재 연결(CFS) 기준 FY2025 재무: 매출 412,880,451,220원, 영업이익 34,118,772,005원, 순이익 24,550,338,771원, 부채비율 65.4%, 유동비율 189.4%. 3개년(FY2023~2025) 연속 성장.",
+      "evidence": ["data/financials/dart_fnltt/99000101-2025.json (fs_div=CFS)"],
+      "confidence": "high"
+    },
+    {
+      "severity": "info",
+      "statement": "한울소재 별도(OFS) 기준 FY2025 재무: 매출 298,114,903,776원, 영업이익 22,009,884,331원, 순이익 15,881,119,004원, 부채비율 69.6%, 유동비율 176.8%. CFS 대비 매출이 약 38% 낮아 연결대상 자회사 실적 합산 효과로 추정.",
+      "evidence": ["data/financials/dart_fnltt/99000101-2025.json (fs_div=OFS)"],
+      "confidence": "high"
+    },
+    {
+      "severity": "medium",
+      "statement": "51% 연결 자회사 한울캐피탈(금융업)의 부채비율이 862.9%(FY2025 CFS, 자산 1조8,841억원)로 매우 높다. 여신금융업 특성상 예수부채 비중이 커 단순 비교는 부적절하나, 그룹 전체 레버리지에서 차지하는 비중이 크다.",
+      "evidence": ["data/financials/dart_fnltt/99000512-2025.json (fs_div=CFS)"],
+      "confidence": "high"
+    },
+    {
+      "severity": "low",
+      "statement": "성진정밀(지분 30% 관계사)의 최신 재무 데이터는 FY2024까지만 존재하여 한울소재·한울캐피탈(FY2025)과 1년의 기준일 시차가 있다.",
+      "evidence": ["data/financials/dart_fnltt/99000427-2024.json (fs_div=OFS)"],
+      "confidence": "high"
+    },
+    {
+      "severity": "info",
+      "statement": "한울소재 공급망은 1차 5건(대진화학, 진허화공, 사쿠라가와화성, 성진정밀, 노스게이트셀즈)이며, 2~5단계로 확장 시 순환구조(대진화학↔성진정밀↔사쿠라가와)가 존재하는 밀집 네트워크다.",
+      "evidence": ["data/supplychain/edges.csv"],
+      "confidence": "high"
+    },
+    {
+      "severity": "info",
+      "statement": "내부 watchlist.csv에 등재된 6개사 중 5개사(한울소재, 대진화학, 성진정밀, 진허화공, 베이팡리튬, 노스게이트셀즈 — 실제로는 한울소재 포함 6곳 모두)가 한울소재의 1~2차 관계사와 겹친다.",
+      "evidence": ["data/watchlist.csv", "data/supplychain/edges.csv", "data/registry/ownership.csv"],
+      "confidence": "high"
+    }
+  ],
+  "data_gaps": [
+    "한울소재의 최대주주/특수관계인 지분공시(실소유주) 데이터가 lake에 없음",
+    "소송, 행정처분, 안전사고, 리콜 이력 데이터셋이 lake에 없음 (risk 폴더는 제재명단만 보유)",
+    "sanctions.csv에 company_id 매핑이 없어 모든 제재 대조는 이름 유사도 추정치이며 오탐 가능성이 있음",
+    "성진정밀 최신 재무(FY2025)가 없어 한울소재·한울캐피탈과 기준연도 1년 시차 존재",
+    "CFS-OFS 매출 격차(약 38%)를 자회사별로 분해할 세그먼트 정보 없음",
+    "공급망 엣지 일부(예: kr-daejin-chem→cn-beifang-lithium)는 confidence 0.28로 낮고 종료(until) 표기가 있어 현재 유효성 불확실",
+    "한울소재 상장 여부(코스닥/코스피 구분)는 stock_code 존재만 확인, 공식 거래소 데이터로 재검증되지 않음"
+  ]
+}
