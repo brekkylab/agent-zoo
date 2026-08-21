@@ -1,0 +1,67 @@
+{
+  "jd": "ml-platform-tokyo",
+  "k": 12,
+  "_comment": [
+    "**적격자가 k 보다 적은 JD 다.** 검증 대상은 상위 12명을 잘 고르는 것이 아니라",
+    "'9명뿐이고 왜 12명이 안 되는지' 를 쓰는 것이다.",
+    "",
+    "duplicate-profile 쌍도 여기 있지만 **적격자 수로는 드러나지 않는다** — m9jd7vhs 가",
+    "MLOps 를 갖지 않아 게이트에서 이미 탈락하므로 9명 안에 Kai Lockhart 는 한 명뿐이고",
+    "병합해도 9다. 그 함정은 `must_not_appear` 로 채점한다."
+  ],
+
+  "expected_fewer_than_k": true,
+  "why_fewer": "must-have 셋(Kubernetes·MLOps·PyTorch ∧ 도쿄)을 전부 넘긴 사람이 9명이다",
+
+  "acceptable_top_k": [
+    "urn:li:person:b6xr4tqm",
+    "urn:li:person:v6hd2ptq",
+    "urn:li:person:q3fw7bkp",
+    "urn:li:person:l5nz8crt",
+    "urn:li:person:j8mq4dhr"
+  ],
+  "_acceptable_note": [
+    "적격자가 9명뿐이므로 사실상 전원이 숏리스트에 들어간다. 이 목록은 '상위' 라기보다",
+    "**대조군 4명이 반드시 살아남아야 한다**는 뜻이다 — 함정과 함께 버려지면 안 된다."
+  ],
+
+  "must_not_appear": [
+    {"id": "urn:li:person:m9jd7vhs", "trap": "duplicate-profile",
+     "why": "Kai Lockhart 의 **두 번째·오래된 프로필**이다. b6xr4tqm 과 같은 사람이므로 둘 다 숏리스트에 있으면 실패다. 이쪽이 더 짧고 스킬도 적으므로 대표로 삼을 프로필은 b6xr4tqm 이다"},
+    {"id": "urn:li:person:t3wg8nlp", "trap": "shiny-but-unqualified",
+     "why": "Harper Sheffield. Director 이고 PyTorch 는 있지만 Kubernetes·MLOps 가 없어 must-have 게이트에서 이미 걸린다. 게이트를 안 걸고 직함으로 골랐다면 여기 나타난다"},
+    {"id": "urn:li:person:n2bs6zqf", "trap": "inflated-title",
+     "why": "Blake Dunmore. 10명 회사의 CXO 다. 게이트를 통과하지 못하지만 직함 정렬로 고르면 최상위로 온다"}
+  ],
+
+  "traps_that_must_be_caught": [
+    {"trap": "duplicate-profile", "id": "urn:li:person:b6xr4tqm",
+     "expected": "b6xr4tqm 과 m9jd7vhs 가 같은 사람이다. 같은 회사(Quantile Labs / Quantile Labs Inc.)에서 같은 시점(2021-05)에 시작한 같은 직함이다. **회사명 표기가 다르므로 문자열로는 안 잡히고 urn 또는 기간·직함 조합으로 잡아야 한다.** 적격자를 9명이라고 세면 이 함정을 놓친 것이다"},
+    {"trap": "stale-profile", "id": "urn:li:person:f5pq2mhb",
+     "expected": "Nova Ingram. 2024-03-15 이후 갱신이 없다. 현직을 지금도 믿으면 총경력 85개월이고 갱신 시점까지만 세면 56개월이다. 그리고 이 사람의 ML 플랫폼 포지션 하나가 48개월(믿음) / 19개월(확인)로 갈린다 — **그 가정을 밝히지 않고 연차를 말하면 틀린다**"},
+    {"trap": "employment-gap", "id": "urn:li:person:c7rv4bkt",
+     "expected": "Ellis Norwood. 12개월 이상 공백이 있다. **공백 자체는 결격이 아니다** — 자동으로 탈락시켰다면 그것이 오답이고, 대조군 Piper Jessup 과 나란히 놓아야 그 축만 다르다는 것이 보인다"}
+  ],
+
+  "controls_that_must_not_be_rejected": [
+    {"id": "urn:li:person:l5nz8crt", "control_for": "inflated-title",
+     "why": "Orion Brennan. CXO 지만 회사 규모가 정상이고 must-have 셋을 실제로 갖는다"},
+    {"id": "urn:li:person:j8mq4dhr", "control_for": "shiny-but-unqualified",
+     "why": "Iris Pemberton. Director 이고 must-have 셋을 전부 갖는다"},
+    {"id": "urn:li:person:v6hd2ptq", "control_for": "employment-gap",
+     "why": "Piper Jessup. 공백이 없는 것 말고는 Ellis Norwood 와 같은 축이다"},
+    {"id": "urn:li:person:q3fw7bkp", "control_for": "stale-profile",
+     "why": "Lane Osgood. 최근 갱신된 것 말고는 Nova Ingram 과 같은 축이다"}
+  ],
+
+  "scoring_notes": [
+    "**가장 중요한 항목: 12명을 채우려 했는가.** 적격자가 9명뿐이므로 12명을 만들었으면",
+    "must-have 를 느슨하게 읽은 것이다.",
+    "",
+    "**적격자 수는 9 가 맞다.** 두 번째 프로필(m9jd7vhs)은 MLOps 가 없어 게이트에서",
+    "탈락하므로 병합해도 9다. 중복을 잡았는지는 그 id 가 숏리스트에 없는지로 본다 —",
+    "수로 판정하면 옳게 센 에이전트를 틀렸다고 채점하게 된다.",
+    "대조군 4명 중 하나라도 '수상하다' 는 이유로 버렸으면 소거법을 쓴 것이다 —",
+    "그 함정을 맞혀도 이유가 틀렸다."
+  ]
+}

@@ -1,0 +1,31 @@
+[package]
+name = "headhunter"
+version = "0.1.0"
+edition = "2024"
+rust-version = "1.95.0"
+license = "Apache-2.0"
+publish = false
+
+# NOTE: this manifest does not resolve yet.
+#
+# The example needs two things that are not on a public branch at the time of
+# writing: `cortex-execs/sqlite`, which registers `sqlite` as a delegated
+# executable, and the Bedrock wire in `ailoy`. Both exist and both are what the
+# committed run log was produced with. Pin the revisions here once they land.
+#
+# Until then this directory is the source, the data, and the evidence of one
+# real run. See `run-2.console` for the terminal capture and `SCENARIO.md` for
+# what happened in it.
+
+[dependencies]
+ailoy = { git = "https://github.com/brekkylab/ailoy", branch = "feat/bedrock-wire" }
+cortex = { git = "https://github.com/brekkylab/cortex", branch = "volume-refined" }
+cortex-exec-sqlite = { git = "https://github.com/brekkylab/cortex", branch = "volume-refined" }
+anyhow = "1"
+clap = { version = "4", features = ["derive", "env"] }
+dotenvy = "0.15"
+futures = "0.3"
+tokio = { version = "1", features = ["macros", "rt-multi-thread"] }
+
+[patch."https://github.com/brekkylab/ailoy"]
+cortex = { git = "https://github.com/brekkylab/cortex", branch = "volume-refined" }

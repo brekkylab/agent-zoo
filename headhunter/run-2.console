@@ -1,0 +1,143 @@
+$ export AILOY_CORTEX_CONSOLE=../../../cortex/target/debug/cortex-local-console
+$ cd examples/headhunter
+$ cargo run -q -p headhunter -- \
+      --model anthropic/claude-sonnet-5 \
+      --jd eval/jd/backend-rust.md \
+      --out run-2 \
+      --k 3
+
+  모델   anthropic/claude-sonnet-5
+  콘솔   /Users/jeffrey/workspace/ailoy-cortex-example-project/cortex/target/debug/cortex-local-console
+  트리   /Users/jeffrey/workspace/ailoy-cortex-example-project/ailoy/examples/headhunter
+  산출   run-2/backend-rust
+  최대   32000 토큰/응답
+
+
+▸ shell sqlite data/headhunter.db "SELECT name, sql FROM sqlite_master WHERE type='table' OR type='view'" --json
+
+▸ shell sqlite data/headhunter.db "SELECT name, holders FROM skill_distribution WHERE name LIKE '%rust%' OR name LIKE '%Rust%' OR name LIKE '%러스트%'" --json sqlite data/headhunter.db "SELECT name, holders FROM…
+
+▸ shell sqlite data/headhunter.db "SELECT id, name FROM candidate_fts JOIN candidate_brief c ON c.id=candidate_fts.id WHERE candidate_fts MATCH 'rust OR rust-lang OR 러스트 OR \"Async Rust\"'" --limit 300 --json
+
+▸ shell sqlite data/headhunter.db "SELECT c.id, c.name FROM candidate_fts JOIN candidate_brief c ON c.id=candidate_fts.id WHERE candidate_fts MATCH 'rust'" --limit 300 --json
+
+▸ shell sqlite data/headhunter.db "SELECT DISTINCT city FROM candidates" --limit 300 --json
+
+▸ shell sqlite data/headhunter.db "SELECT c.id, c.name, c.city, c.real_years, c.current_title, c.current_company, c.contact_rows, c.headline FROM candidate_fts JOIN candidate_brief c ON c.id=candidate_fts.id …
+
+▸ shell sqlite data/headhunter.db "SELECT c.id, c.name, c.city, c.real_years, c.current_title, c.current_company, c.contact_rows, c.headline FROM candidate_fts JOIN candidate_brief c ON c.id=candidate_fts.id …
+
+▸ shell sqlite data/headhunter.db "SELECT c.id, c.name, c.city, c.real_years, c.current_title, c.current_company, c.contact_rows, c.headline FROM candidate_fts JOIN candidate_brief c ON c.id=candidate_fts.id …
+
+▸ shell for id in n7kv4jsb w3gm8rbq k6qb3nwd b3tq9wmk e8mk2wpb q8jw3rvh k8vq3mrt s3ohzwe4 p3kd7nwq r2vt6nsw d8kf3prw a4rn7qvt u5cz9jhr; do echo "=== $id ===" sqlite data/headhunter.db "SELECT id,name,headline…
+Let me use candidate_brief instead, and check positions for each promising candidate individually.
+▸ shell for id in n7kv4jsb w3gm8rbq k6qb3nwd b3tq9wmk e8mk2wpb q8jw3rvh k8vq3mrt s3ohzwe4 p3kd7nwq r2vt6nsw d8kf3prw a4rn7qvt u5cz9jhr; do echo "=== $id ===" sqlite data/headhunter.db "SELECT * FROM candidate…
+
+▸ shell for id in n7kv4jsb w3gm8rbq k8vq3mrt e8mk2wpb k6qb3nwd b3tq9wmk q8jw3rvh r2vt6nsw d8kf3prw a4rn7qvt u5cz9jhr p3kd7nwq; do echo "=== $id ===" sqlite data/headhunter.db "SELECT ord,title,company_name,co…
+
+▸ shell for id in b3tq9wmk e8mk2wpb k6qb3nwd n7kv4jsb w3gm8rbq q8jw3rvh s3ohzwe4; do echo "=== $id ===" sqlite data/headhunter.db "SELECT * FROM candidate_tenure WHERE id='urn:li:person:$id'" --json done
+
+▸ shell sqlite data/headhunter.db "SELECT c.id, c.name, c.city, c.real_years, c.contact_rows, c.headline FROM candidate_fts JOIN candidate_brief c ON c.id=candidate_fts.id WHERE candidate_fts MATCH 'settlemen…
+
+▸ shell for id in 8rs80uy8 r7nk4qwj; do echo "=== $id ===" sqlite data/headhunter.db "SELECT * FROM candidate_brief WHERE id='urn:li:person:$id'" --json sqlite data/headhunter.db "SELECT ord,title,company_nam…
+
+▸ shell sqlite data/headhunter.db "SELECT ord,title,company_name,employment_type,workplace_type,start_year,start_month,end_year,end_month FROM positions WHERE candidate_id='urn:li:person:8rs80uy8'" --json
+
+▸ shell sqlite data/headhunter.db "SELECT id FROM candidates WHERE first_name||' '||last_name IN ('Reese Whitlock','하은 성','채원 노','도윤 반','지훈 류','서연 강','Devon Grantham')" --json
+Good, no duplicate-name collisions among my top picks (each id appeared once with these exact names in my candidate set). Now let's dig deeper into the top candidates: e8mk2wpb (Reese Whitlock), b3tq9wmk (하은 성), k6qb3nwd (채원 노), n7kv4jsb (도윤 반), w3gm8rbq (지훈 류), k8vq3mrt (서연 강). Let's check skills and contacts detail for these.
+▸ shell for id in e8mk2wpb b3tq9wmk k6qb3nwd n7kv4jsb w3gm8rbq k8vq3mrt; do echo "=== $id ===" sqlite data/headhunter.db "SELECT name,endorsement_count FROM skills WHERE candidate_id='urn:li:person:$id'" --js…
+
+▸ shell sqlite data/headhunter.db "SELECT name,endorsement_count FROM skills WHERE candidate_id='urn:li:person:0s3tprad'" --json sqlite data/headhunter.db "SELECT ord,title,company_name,start_year,start_month…
+
+▸ shell for id in b3tq9wmk e8mk2wpb k6qb3nwd; do echo "=== $id ===" sqlite data/headhunter.db "SELECT * FROM open_to_work_prefs WHERE candidate_id='urn:li:person:$id'" --json done
+
+▸ shell for id in bqsuo43r t4qm9wbd enqhr58x q8jw3rvh s3ohzwe4; do echo "=== $id ===" sqlite data/headhunter.db "SELECT * FROM candidate_brief WHERE id='urn:li:person:$id'" --json sqlite data/headhunter.db "S…
+
+▸ shell sqlite data/headhunter.db "SELECT id FROM candidates WHERE first_name='Reese' AND last_name='Whitlock'" --json sqlite data/headhunter.db "SELECT id FROM candidates WHERE first_name='하은' AND last_name=…
+
+▸ shell sqlite data/headhunter.db "SELECT * FROM candidate_brief WHERE id='urn:li:person:u4r82u7p'" --json
+
+▸ shell sqlite data/headhunter.db "SELECT * FROM candidate_brief WHERE id='urn:li:person:z4hn7cwp'" --json sqlite data/headhunter.db "SELECT ord,title,company_name,employment_type,workplace_type,start_year,st…
+
+▸ shell sqlite data/headhunter.db "SELECT candidate_id, count(*) FROM positions WHERE company_name LIKE 'Nordwind%' GROUP BY candidate_id" --json sqlite data/headhunter.db "SELECT c.id,c.name,c.city,c.headlin…
+
+▸ shell for id in b3tq9wmk e8mk2wpb k6qb3nwd; do echo "=== $id ===" sqlite data/headhunter.db "SELECT * FROM contacts WHERE candidate_id='urn:li:person:$id'" --json sqlite data/headhunter.db "SELECT * FROM la…
+
+▸ shell sqlite data/headhunter.db "SELECT * FROM candidate_tenure WHERE id='urn:li:person:bqsuo43r'" --json
+
+▸ shell mkdir -p run-2/backend-rust sqlite data/headhunter.db "SELECT * FROM candidate_tenure WHERE id IN ('urn:li:person:b3tq9wmk','urn:li:person:k6qb3nwd','urn:li:person:e8mk2wpb')" --json
+
+▸ shell sqlite data/headhunter.db "SELECT id,first_name,last_name FROM candidates WHERE (first_name='하은' AND last_name='성') OR (first_name='채원' AND last_name='노') OR (first_name='Reese' AND last_name='Whitloc…
+
+▸ shell sqlite data/headhunter.db "SELECT * FROM candidate_tenure WHERE id='urn:li:person:8rs80uy8'" --json sqlite data/headhunter.db "SELECT * FROM candidate_brief WHERE id='urn:li:person:r7nk4qwj'" --json s…
+
+▸ shell for id in b3tq9wmk e8mk2wpb k6qb3nwd; do echo "=== $id ===" sqlite data/headhunter.db "SELECT school_name,degree_name,field_of_study,start_year,end_year FROM educations WHERE candidate_id='urn:li:pers…
+
+▸ shell for id in b3tq9wmk e8mk2wpb k6qb3nwd; do echo "=== $id ===" sqlite data/headhunter.db "SELECT id,headline,summary FROM candidates WHERE id='urn:li:person:$id'" --json done
+
+▸ shell for id in b3tq9wmk e8mk2wpb k6qb3nwd; do echo "=== $id ===" sqlite data/headhunter.db "SELECT title,company_name,workplace_type,employment_type,location,end_year FROM positions WHERE candidate_id='urn…
+
+▸ shell sqlite data/headhunter.db "SELECT * FROM current_position WHERE id='urn:li:person:bqsuo43r'" --json
+
+▸ shell sqlite data/headhunter.db "SELECT candidate_id,company_urn,company_name FROM positions WHERE candidate_id IN ('urn:li:person:n7kv4jsb','urn:li:person:w3gm8rbq')" --json
+
+▸ shell sqlite data/headhunter.db "SELECT id,first_name,last_name FROM candidates WHERE first_name='서연' AND last_name='강'" --json
+
+▸ shell sqlite data/headhunter.db "SELECT id,city,country FROM candidates WHERE id='urn:li:person:e8mk2wpb'" --json sqlite data/headhunter.db "SELECT * FROM current_position WHERE id='urn:li:person:e8mk2wpb'"…
+
+▸ shell sqlite data/headhunter.db "SELECT ord,title,company_name,employment_type,workplace_type,start_year,start_month,end_year,end_month FROM positions WHERE candidate_id='urn:li:person:bqsuo43r' ORDER BY or…
+
+▸ shell for id in b3tq9wmk e8mk2wpb k6qb3nwd; do echo "=== $id ===" sqlite data/headhunter.db "SELECT open_to_work,last_updated_at FROM candidates WHERE id='urn:li:person:$id'" --json done
+
+▸ shell mkdir -p run-2/backend-rust
+
+▸ shell sqlite data/headhunter.db "SELECT * FROM candidate_brief WHERE id='urn:li:person:6o5wppqi'" --json sqlite data/headhunter.db "SELECT name FROM skills WHERE candidate_id='urn:li:person:6o5wppqi'" --jso…
+
+▸ shell sqlite data/headhunter.db "SELECT * FROM contacts WHERE candidate_id='urn:li:person:bqsuo43r'" --json
+
+▸ write run-2/backend-rust/00-shortlist.md ## Picks 1. urn:li:person:b3tq9wmk — 하은 성 — Runs Nordwind Works' Rust settlement backend today; rewrote the settlement batch in Rust to cut close time from a day to …
+Now let's write the three cold mail drafts, matching profile_language (하은 성: ko, Reese Whitlock: en, 채원 노: ko).
+▸ write run-2/backend-rust/01-하은-성.md 제목: Kestrelbank 정산 플랫폼 — Rust 서버 개발자 (urn:li:person:b3tq9wmk) 안녕하세요 하은 성님, Kestrelbank에서 결제 정산 플랫폼을 만들고 있는 채용 담당자입니다. 프로필에서 Nordwind Works에서 정산 백엔드를 Rust로 다시 쓰면서 마감 처리 시간…
+
+▸ write run-2/backend-rust/02-reese-whitlock.md Subject: Rust settlement backend role at Kestrelbank (urn:li:person:e8mk2wpb) Hi Reese, I'm recruiting for Kestrelbank, a settlement infrastructure provider for…
+
+▸ write run-2/backend-rust/03-채원-노.md 제목: Kestrelbank 정산 플랫폼 — Rust 서버 개발자 (urn:li:person:k6qb3nwd) 안녕하세요 채원 노님, Kestrelbank는 국내 이커머스·핀테크 사업자에게 정산 인프라를 제공하는 회사입니다. Halcyon Systems에서 초당 8만 건 규모의 이벤트 수집 게이트웨이를 …
+Written to `run-2/backend-rust/`. Summary of the process:
+
+**Search approach:** Used FTS `MATCH 'rust'` (catching the drifted spellings `Rust`, `rust-lang`, `Rust Lang`, `러스트`, `Async Rust` per `skill_distribution`), filtered to `city IN ('Seoul','Seongnam')`, cross-checked against a domain-specific query (`rust AND (payment OR 정산 OR idempoten OR kafka ...)`) and a payments-only query (`settlement OR 정산`) to catch people who might not surface on the Rust term alone.
+
+**Picks (top 3):**
+1. **urn:li:person:b3tq9wmk — 하은 성** — currently running Rust settlement backend at Nordwind Works, cut close time from a day to an hour, did PostgreSQL partitioning/read-replica work — the literal JD task.
+2. **urn:li:person:e8mk2wpb — Reese Whitlock** — owns Finlogic's Rust card-authorization service, rewrote the settlement reconciler in Rust, built the retry-safe idempotency layer.
+3. **urn:li:person:k6qb3nwd — 채원 노** — built Halcyon's Rust event-ingestion gateway (80K events/sec into Kafka) with explicit offset-management/dedup design — near word-for-word match to the JD's "idempotency and offset management is the center of this job."
+
+**Notable rejections flagged with reasoning:** Casey Dunmore (highest tenure but current role is part-time Python scripting, not Rust, and uncontactable — a classic stale/misleading-headline trap), two other people named Devon Grantham and Reese Whitlock who are different, weaker-fit people, Alex Merrick (payments language but zero Rust), and several thinner/uncontactable candidates kept as reserves.
+--- 실행 요약 ---
+턴 91 / 툴 호출 45
+종료 사유 Stop
+산출물 4개:
+  run-2/backend-rust/00-shortlist.md
+  run-2/backend-rust/01-하은-성.md
+  run-2/backend-rust/02-reese-whitlock.md
+  run-2/backend-rust/03-채원-노.md
+
+채점: eval/run_eval.py --score run-2/backend-rust
+
+$ python3 eval/run_eval.py --score run-2/backend-rust
+채점: run-2/backend-rust
+
+자동 실패 없음
+
+사람이 확인할 것 12건
+  · 대조군 Devon Grantham (headline-bait 의 대조군)가 숏리스트에 없다 — 순위에서 밀린 것인지 '수상하다' 고 버린 것인지 거절 사유를 읽어야 한다
+  · 대조군 Finley Hollis (skills-without-evidence 의 대조군)가 숏리스트에 없다 — 순위에서 밀린 것인지 '수상하다' 고 버린 것인지 거절 사유를 읽어야 한다
+  · 대조군 Sage Radcliffe (strong-but-not-open 의 대조군)가 숏리스트에 없다 — 순위에서 밀린 것인지 '수상하다' 고 버린 것인지 거절 사유를 읽어야 한다
+  · 대조군 Quinn Westbrook (overlapping-tenure 의 대조군)가 숏리스트에 없다 — 순위에서 밀린 것인지 '수상하다' 고 버린 것인지 거절 사유를 읽어야 한다
+  · [overlapping-tenure] Riley Calloway 의 두 재직 기간이 24개월 겹친다. 순진하게 더하면 6.0년, 실제 4.0년. **4년 임계에 정확히 걸쳐 있으므로 합산 방식이 적격 여부를 뒤집는다** — 이 사람을 상위에 올렸다면 4.0년이라고 말해야 하고, 6년이라고 말했다면 계산이 틀렸다
+  · [rank-inversion-pair] Avery Kendrick(real 89개월)과 Morgan Thorne(real 60개월). 순진한 합산은 Thorne(96)이 Kendrick(89)보다 앞서고 병합하면 뒤집힌다. 둘 다 연락 수단이 없다는 것도 함께 봐야 한다
+  · [no-contact] 민준 심. contacts 에 행이 없다. 상위에 올렸다면 어떻게 연락할지가 숏리스트에 있어야 한다
+  · [채점 기준] 상위 3명에 clear-fit 이 하나도 없으면 좁히는 판단이 약했다는 뜻이다.
+  · [채점 기준] 숏리스트가 **버린 사람과 이유**를 적지 않았으면 감점이다. 특히 headline-bait 처럼
+  · [채점 기준] 순진한 쿼리가 상위로 올렸을 사람을 언급하지 않았다면, 걸러낸 것이 아니라 못 본 것과
+  · [채점 기준] 구별되지 않는다.
+  · [채점 기준] 콜드메일이 후보의 profile_language 와 다른 언어면 감점이다.
