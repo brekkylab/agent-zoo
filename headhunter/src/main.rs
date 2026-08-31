@@ -1,16 +1,35 @@
-//! headhunter 예제 — JD 를 읽고 후보를 찾아 숏리스트와 콜드메일 초안을 쓴다.
+//! The headhunter example — read a posting, find candidates, write a shortlist and
+//! cold-mail drafts.
 //!
-//! # 새 툴 코드가 없다
+//! # What this example shows
 //!
-//! cortex 의 delegation 이 delegated 이름을 PATH 심볼릭 링크로 실체화하므로, `sqlite` 를
-//! 등록하면 ailoy 의 기존 `shell` 툴이 그것을 부른다 — `console.exec(["sh", "-c", cmd])`
-//! 가 이미 그 경로다. 어댑터가 0줄인 것이 spec §1.2 의 결론이고,
-//! `cortex-console-servers/local/tests/exec_sqlite.rs` 가 실제 서버 프로세스를 거쳐
-//! 실증했다.
+//! **An app builds an executable in its own domain and attaches it to the console.**
+//! That is [`executable`]'s `headhunting`, and it is the agent's only way to the pool.
+//! Instead of writing SQL the agent asks in the vocabulary of recruiting — find by
+//! condition (`search`), read the ones you picked (`read`), and drop to free-form SQL only
+//! when neither can ask it (`query`).
 //!
-//! 그래서 이 파일이 하는 일은 셋뿐이다 — CLI 를 읽고, 콘솔을 조립하고, 에이전트를 돌린다.
+//! # Attaching it costs no code
+//!
+//! cortex's delegation materializes a delegated name as a symlink on `PATH`, so once the
+//! name is registered ailoy's existing `shell` tool calls it — `console.exec(["sh", "-c",
+//! cmd])` is already that path. Zero lines of adapter is spec §1.2's conclusion, and
+//! `cortex-console-servers/local/tests/exec_sqlite.rs` demonstrated it through a real
+//! server process. So the app's work is implementing `Executable` and naming it.
+//!
+//! # What this file does
+//!
+//! Reads the CLI, prepares the tree this run will use, assembles the console and the
+//! agent, consumes the stream, and checks the result. It does not query the pool — that is
+//! [`executable`]'s job. What flows onto the screen and into the query log is built by
+//! [`trace`], which holds the tool traffic; bringing it here would put state in two
+//! places.
 
-use ailoy::{lang_model::get_lm_providers_mut, message::Role};
+use ailoy::{
+    agent::{Agent, AgentSpec, AgentState},
+    lang_model::get_lm_providers_mut,
+    message::Role,
+};
 use anyhow::{Context, Result, bail};
 use clap::Parser;
 use cortex::{
@@ -18,45 +37,51 @@ use cortex::{
     exec::ExecutableSet,
     fs::Mount,
 };
-use cortex_exec_sqlite::Sqlite;
 use futures::StreamExt;
-// `std::process::Command` 가 아니다 — `StdioClient` 가 런타임에서 파이프를 읽고 쓰므로
-// async 쪽을 받는다. 계획 A 의 통과 테스트가 같은 자리에 같은 주석을 달았다.
+// Not `std::process::Command`: `StdioClient` reads and writes the pipes on the runtime,
+// so it takes the async one. Plan A's passing test carries the same note in the same place.
 use tokio::process::Command;
 
+mod executable;
 mod prompt;
+mod trace;
+
+use executable::Headhunting;
 
 #[derive(Parser)]
-#[command(about = "채용공고를 읽고 인재풀에서 상위 k명을 골라 콜드메일 초안을 쓴다")]
+#[command(about = "Read a job posting, pick the top k from the pool, draft cold mails")]
 struct Args {
-    /// JD 마크다운 경로.
-    #[arg(long, default_value = "jd.md")]
+    /// Path to the posting, as markdown. Four ship with the example, under `jd/`.
+    #[arg(long, default_value = "jd/backend-rust.md")]
     jd: std::path::PathBuf,
 
-    /// 숏리스트에 낼 인원. 적격자가 이보다 적으면 적게 내고 이유를 쓴다.
+    /// How many to shortlist. If fewer qualify, it emits fewer and says why.
     #[arg(long, default_value_t = 3)]
     k: usize,
 
-    /// 산출물을 쓸 디렉터리. JD 이름으로 하위 디렉터리를 만든다.
+    /// The candidate pool.
+    ///
+    /// **A host path**, not a name inside the mounted tree. `headhunting` is a command
+    /// the app registers, so it receives this value at registration and holds it — which
+    /// is why the command line the agent writes carries no db argument.
+    #[arg(long, default_value = "data/headhunter.db")]
+    db: std::path::PathBuf,
+
+    /// Where artifacts go. A subdirectory is made under the posting's name.
     #[arg(long, default_value = "artifacts")]
     out: std::path::PathBuf,
 
-    /// 모델 식별자.
+    /// The model identifier.
     ///
-    /// `<provider>/<model>` 형식이고 프로바이더는 환경변수로 등록된다. 기본값이
-    /// Bedrock 인 이유는 이 예제가 그것으로 돌려졌기 때문이다 —
-    /// `AWS_BEARER_TOKEN_BEDROCK` 과 `AWS_REGION` 을 읽는다.
+    /// `<provider>/<model>`; the provider is registered from environment variables, so the
+    /// default reads `ANTHROPIC_API_KEY`. It is the model the committed run in
+    /// `run_result/` was made with.
     ///
-    /// **Bedrock 쪽 모델 이름은 inference-profile id 여야 한다.**
-    /// `global.anthropic.claude-sonnet-5` 처럼 접두어가 붙은 것이고, 맨 foundation-model
-    /// id 는 on-demand throughput 에서 거부된다.
-    ///
-    /// 다른 프로바이더도 그대로 쓸 수 있다 — `--model anthropic/claude-sonnet-5` 이면
-    /// `ANTHROPIC_API_KEY` 를 읽는다.
-    #[arg(long, default_value = "bedrock/global.anthropic.claude-sonnet-5")]
+    /// Any registered provider works — `--model openai/…` reads `OPENAI_API_KEY`.
+    #[arg(long, default_value = "anthropic/claude-sonnet-5")]
     model: String,
 
-    /// 콘솔 서버 바이너리. cortex 형제 체크아웃에서 빌드한 것.
+    /// The console server binary, built from the sibling cortex checkout.
     #[arg(
         long,
         env = "AILOY_CORTEX_CONSOLE",
@@ -64,57 +89,51 @@ struct Args {
     )]
     console: std::path::PathBuf,
 
-    /// 한 응답에 모델이 낼 수 있는 최대 토큰.
+    /// The most tokens the model may emit in one response.
     ///
-    /// **기본값(Anthropic 8192)으로는 이 예제가 실패한다.** 숏리스트를 `write` 툴로
-    /// 쓰는데 파일 본문이 툴 호출 인자에 실려 응답 토큰에 그대로 잡히기 때문이다.
-    /// 실측: 10KB 짜리 숏리스트를 쓰려다 `FinishReason::Length` 로 끝나고 산출물이
-    /// 0개가 나왔다 — 47턴을 돌고 아무것도 안 남았다.
+    /// **The provider default is not enough here** — see the note where the spec is built.
     #[arg(long, default_value_t = 32_000)]
     max_tokens: u64,
 }
 
-/// 모델에 맞는 프로바이더가 등록됐는지 **호출 전에** 확인한다.
+/// Checks **before the first call** that a provider for this model is registered.
 ///
-/// 없으면 첫 LM 호출에서 죽는데, 그때 나오는 말이 "no provider found" 라 무엇이
-/// 빠졌는지 알려주지 않는다. 어느 환경변수가 비었는지를 여기서 짚는다.
+/// Without it the first LM call dies saying "no provider found", which does not say what
+/// is missing. This names the empty environment variable.
 fn ensure_provider(model: &str) -> Result<()> {
     let providers = get_lm_providers_mut();
     let default = providers
         .get("default")
-        .expect("default 프로바이더는 항상 있다");
+        .expect("the default provider is always there");
     if default.get(model).is_some() {
         return Ok(());
     }
     drop(providers);
 
     let (var, hint) = match model.split('/').next() {
-        Some("bedrock") => (
-            "AWS_BEARER_TOKEN_BEDROCK",
-            "Bedrock 콘솔 > API keys 에서 발급한다",
-        ),
-        Some("anthropic") => ("ANTHROPIC_API_KEY", "console.anthropic.com 에서 발급한다"),
+        Some("anthropic") => ("ANTHROPIC_API_KEY", "issued at console.anthropic.com"),
         Some("openai") => ("OPENAI_API_KEY", ""),
         _ => ("", ""),
     };
     if !var.is_empty() && std::env::var(var).unwrap_or_default().trim().is_empty() {
-        bail!("{var} 가 비어 있다. 저장소 루트 `.env` 를 채워라. {hint}");
+        bail!("{var} is empty. Fill in the repository root `.env`. {hint}");
     }
     bail!(
-        "모델 '{model}' 에 맞는 프로바이더가 없다. `.env` 에 해당 API 키가 있는지, \
-         모델 접두사(`bedrock/` · `anthropic/` …)가 맞는지 확인해라"
+        "no provider for model '{model}'. Check that the API key is in `.env` and that \
+         the prefix (`anthropic/`, `openai/`, …) is right"
     )
 }
 
-/// 작업 트리 — 콘솔이 트리로 취급할 디렉터리.
+/// The working tree — the directory the console treats as one.
 ///
-/// `Mount` 는 커널 마운트를 뜻하지 않는다. 필수 메서드가 `mountpoint()` 하나이고,
-/// `PathBuf` 는 이것을 구현하지 않으므로 다섯 줄을 직접 쓴다.
+/// `Mount` does not mean a kernel mount. Its only required method is `mountpoint()`, and
+/// `PathBuf` does not implement it, so these five lines are written by hand.
 ///
-/// FUSE 는 필요 없다. cortex 의 `FuseTMount`/`FuseMount` 는 커널이 실제로 답해야 할 때를
-/// 위한 것이고 `fuser` optional feature 뒤에 있다. 호스트 디렉터리 하나를 트리로 쓰는
-/// 데는 쓰이지 않는다 — `local/tests/exec_sqlite.rs` 의 `Mounted` 가 같은 다섯 줄이고
-/// 그 테스트가 실제 서버를 거쳐 통과한다.
+/// FUSE is not needed. cortex's `FuseTMount`/`FuseMount` are for when the kernel actually
+/// has to answer, and they sit behind the optional `fuser` feature. Using one host
+/// directory as a tree does not reach them — `Mounted` in
+/// `local/tests/exec_sqlite.rs` is the same five lines, and that test passes through a
+/// real server.
 struct Tree(std::path::PathBuf);
 
 impl Mount for Tree {
@@ -125,62 +144,34 @@ impl Mount for Tree {
 
 #[tokio::main]
 async fn main() -> Result<()> {
-    // 저장소 루트의 `.env` 를 읽는다. 없으면 조용히 넘어가고 이미 설정된 환경변수를 쓴다.
+    // Reads the repository root `.env`. If there is none it moves on quietly and uses
+    // whatever is already in the environment.
     //
-    // ailoy 본체에도 `dotenvy::dotenv()` 가 있지만 `#[cfg(test)]` 안이라 테스트에서만
-    // 돈다. 바이너리는 직접 불러야 하고, 안 부르면 `.env` 에 키를 넣어 두고도
-    // "no provider found" 를 본다.
+    // ailoy itself calls `dotenvy::dotenv()` too, but inside `#[cfg(test)]`, so only in
+    // tests. A binary has to call it, and without the call you see "no provider found"
+    // with the key sitting in `.env`.
     //
-    // `dotenv()` 는 현재 디렉터리부터 위로 올라가며 찾으므로, `examples/headhunter` 에서
-    // 돌리든 저장소 루트에서 돌리든 같은 파일을 집는다.
+    // `dotenv()` walks upward from the current directory, so running from
+    // `examples/headhunter` or from the repository root picks up the same file.
     dotenvy::dotenv().ok();
 
     let args = Args::parse();
     ensure_provider(&args.model)?;
     let jd = std::fs::read_to_string(&args.jd)
-        .with_context(|| format!("JD 읽기 {}", args.jd.display()))?;
+        .with_context(|| format!("reading the posting {}", args.jd.display()))?;
 
-    // 에이전트가 `sqlite data/headhunter.db '<SQL>'` 을 부를 때 그 경로는 **워크스페이스
-    // 기준**이지 호스트 경로가 아니다. 그래서 현재 디렉터리를 통째로 마운트한다 —
-    // `data/` 도 `artifacts/` 도 그 아래다.
-    let root = std::env::current_dir()?;
-
-    let mut server = Command::new(&args.console);
-    // 서버가 못 뜨면 이유가 이쪽 stderr 로 나오게 둔다. 조용히 실패하면 원인이
-    // "콘솔이 안 붙는다" 한 줄로만 보인다.
-    server.stderr(std::process::Stdio::inherit());
-
-    let console = Console::builder()
-        .client(StdioClient::new(server)?)
-        .mount(Tree(root.clone()))
-        .executables(ExecutableSet::new().register("sqlite", Sqlite::summary(), Sqlite::new()))
-        .build()
-        .await?;
-
-    // `Console::builder().build()` 만 await 한다 — `AgentBuilder::build()` 는 async 가
-    // 아니다.
-    // **`system_tools()` 가 없으면 에이전트가 아무것도 못 한다.** 콘솔을 붙이는 것과
-    // 툴을 등록하는 것은 별개다 — 콘솔은 툴이 명령을 실행할 장소이고, 툴이 없으면
-    // 실행할 주체가 없다.
-    //
-    // 처음에 이것을 빠뜨렸고 **실패가 조용했다.** 지침은 "You have a `shell` tool" 이라고
-    // 말하는데 실제로는 없으니, 모델이 부를 것이 없어 명령을 산문으로 흉내 냈다:
-    //
-    //     `sqlite data/headhunter.db 'PRAGMA table_info(candidates)'`
-    //
-    // 그것은 툴 호출이 아니라 그냥 텍스트다. 모델이 턴을 끝내고 스트림도 끝나서,
-    // 에러 없이 **exit 0 으로 한 턴 만에** 종료했다.
-    //
-    // `system_tools()` 는 `shell`·`read`·`write`·`edit`·`glob`·`grep` 을 준다.
-    // `shell` 이 `sqlite` 를 부르고(delegation 이 PATH 에 올려 둔다), `write` 가
-    // 산출물을 쓴다. 개별로 붙이지 않는 이유는 이 목록이 모델 계열에 따라 갈리기
-    // 때문이다 — openai 계열은 `apply_patch` 를 받는다.
-    let mut agent = ailoy::agent::AgentBuilder::new(&args.model)
-        .console(console)
-        .system_tools()
-        .max_tokens(args.max_tokens)
-        .instruction(prompt::system(args.k, &args.out))
-        .build()?;
+    // **The pool is checked here.** Without it the first query dies, and what is left on
+    // screen is the agent failing a command — which does not show that the cause is the
+    // data.
+    if !args.db.is_file() {
+        bail!(
+            "no pool at {}. Build it with `python3 sql/load.py`",
+            args.db.display()
+        );
+    }
+    // The executable opens a host path, not a name inside the mounted tree, so it is made
+    // absolute here — the console server may run from a different directory.
+    let db = std::fs::canonicalize(&args.db)?;
 
     let jd_slug = args
         .jd
@@ -188,20 +179,94 @@ async fn main() -> Result<()> {
         .map(|s| s.to_string_lossy().into_owned())
         .unwrap_or_else(|| "role".to_string());
     let out_dir = args.out.join(&jd_slug);
+    let workspace = prepare(&out_dir, &args.jd)?;
 
-    println!("  모델   {}", args.model);
-    println!("  콘솔   {}", args.console.display());
-    println!("  트리   {}", root.display());
-    println!("  산출   {}", out_dir.display());
-    println!("  최대   {} 토큰/응답\n", args.max_tokens);
+    let mut server = Command::new(&args.console);
+    // If the server cannot start, its reason comes out on this stderr. Failing quietly
+    // would leave only "the console did not attach".
+    server.stderr(std::process::Stdio::inherit());
 
-    // `run` 은 스트림을 돌려준다 — 단일 future 가 아니다. 소비해야 턴이 돈다.
+    let console = Console::builder()
+        .client(StdioClient::new(server)?)
+        .mount(Tree(workspace.clone()))
+        .executables(ExecutableSet::new().register(
+            "headhunting",
+            Headhunting::summary(),
+            Headhunting::new(&db),
+        ))
+        .build()
+        .await?;
+
+    // Only `Console::builder().build()` is awaited — `AgentBuilder::build()` is not async.
     //
-    // **종료 사유를 붙들고 있는다.** 산출물이 없을 때 왜 멈췄는지의 유일한 단서다.
-    // `Stop` 이면 쓰겠다고 말만 하고 턴을 끝낸 것이고, `Length` 면 max_tokens 다.
+    // **Without `system_tools()` the agent can do nothing.** Attaching a console and
+    // registering tools are separate things: the console is where a tool runs a command,
+    // and with no tools there is nobody to run it.
+    //
+    // This was missed once and **the failure was silent.** The instruction said "You have
+    // a `shell` tool" while there was none, so with nothing to call the model imitated a
+    // command in prose:
+    //
+    //     `headhunting search --skill rust`
+    //
+    // That is not a tool call, it is text. The model ended its turn, the stream ended,
+    // and the run finished **in one turn with exit 0** and no error.
+    //
+    // `system_tools()` gives `shell`, `read`, `write`, `edit`, `glob`, and `grep`.
+    // `shell` calls `headhunting` (delegation put it on `PATH`), `read` reads the posting
+    // and the schema from the tree, and `write` writes the artifacts. They are not
+    // attached individually because the list differs by model family — openai models get
+    // `apply_patch`.
+    //
+    // Keeping those tools from seeing outside the tree is what [`prepare`] does.
+    //
+    // # Why the spec is assembled by hand
+    //
+    // `AgentBuilder` is the ordinary way in, and it forwards `temperature`, `top_p`, and
+    // the rest to the spec — but not `max_tokens`, so from the builder there is no way to
+    // raise the ceiling. **This example does not work at the provider default.** The
+    // shortlist is written through the `write` tool, so its whole body rides in the
+    // tool-call arguments and counts against the response. Measured at Anthropic's 8192:
+    // two of the four postings ended in `FinishReason::Length` with zero artifacts, after
+    // 31 and 37 turns of work that reached the right people and then had nowhere to put
+    // them.
+    //
+    // `AgentSpec` carries `max_tokens`, and `AgentState::with_console` is what the builder
+    // does with a console, so going straight to `Agent` costs two extra lines and removes
+    // the ceiling.
+    let spec = AgentSpec::new(&args.model)
+        .system_tools()
+        .instruction(prompt::system(args.k))
+        .max_tokens(args.max_tokens);
+    let mut agent = Agent::try_with_provider_and_state(
+        spec,
+        "default",
+        AgentState::new().with_console(console),
+    )?;
+
+    println!("  posting  {}", args.jd.display());
+    println!("  model    {}", args.model);
+    println!("  console  {}", args.console.display());
+    // The paths as given, not the canonicalized ones the mount and the executable hold.
+    // Absolute here would put whoever ran it into a record that gets committed.
+    println!("  pool     {}", args.db.display());
+    println!("  tree     {}", out_dir.display());
+    println!("  max      {} tokens/response\n", args.max_tokens);
+
+    // `run` returns a stream, not a single future. Turns advance as it is consumed.
+    //
+    // **The finish reason is held onto.** With no artifacts it is the only clue to why it
+    // stopped: `Stop` means it said it would write and ended the turn, `Length` means the
+    // response hit the provider's ceiling — the shortlist rides in the `write` call's
+    // arguments, so a long one is a long response.
+    //
+    // What goes on screen is built by [`trace::Trace`]. Full command text goes to a file
+    // rather than the screen; what flows here is the agent's words and the scale of what
+    // the tools returned.
     let mut turns = 0usize;
     let mut tool_calls = 0usize;
     let mut last_finish: Option<String> = None;
+    let mut trace = trace::Trace::default();
     let mut stream = agent.run(prompt::user(&jd, &args.jd));
     while let Some(output) = stream.next().await {
         let output = output?;
@@ -210,31 +275,95 @@ async fn main() -> Result<()> {
             last_finish = Some(format!("{:?}", output.finish_reason));
         }
         tool_calls += output.message.tool_calls.as_ref().map_or(0, |c| c.len());
-        print!("{}", render(&output));
+        print!("{}", trace.observe(&output));
         use std::io::Write;
         std::io::stdout().flush()?;
     }
     drop(stream);
+    // The last group has no words following it, so it only folds after the stream ends.
+    print!("{}", trace.finish());
 
-    let written = list_files(&out_dir);
-    println!("\n--- 실행 요약 ---");
-    println!("턴 {turns} / 툴 호출 {tool_calls}");
-    println!(
-        "종료 사유 {}",
-        last_finish.as_deref().unwrap_or("(assistant 응답 없음)")
-    );
-    println!("산출물 {}개:", written.len());
-    for p in &written {
-        println!("  {}", p.display());
+    let queries = trace.queries().len();
+    if queries > 0 {
+        trace.write_queries(&out_dir.join(trace::QUERY_LOG), &args.jd)?;
     }
 
-    // **파일이 생겼는지가 아니라 숏리스트가 나왔는지를 본다.** 메일 초안만 남기고
-    // 중간에 끊긴 실행을 성공으로 세면 검증이 무의미하다. 그리고 툴 호출이 0 이면
-    // 에이전트가 명령을 산문으로 흉내 낸 것이다 — 실제로 그렇게 실패한 적이 있다.
+    let written = list_files(&out_dir);
+    println!("--- run summary ---");
+    println!(
+        "{turns} turns · {queries} pool calls · {} failed · {tool_calls} tool calls · finish {}",
+        trace.failures(),
+        last_finish.as_deref().unwrap_or("(no assistant response)")
+    );
+    let usage = trace.usage();
+    println!(
+        "tokens  input {} · output {} · cache write {} · cache read {}",
+        trace::toks(usage.input),
+        trace::toks(usage.output),
+        trace::toks(usage.cache_write),
+        trace::toks(usage.cache_read)
+    );
+    // Printed only when caching took hold. Without it the two figures are equal and there
+    // is nothing to say.
+    //
+    // **There is a reason the effective input is computed here.** The four figures are
+    // priced differently (1× list, 1.25× write, 0.1× read), so merely listing them leaves
+    // the reader to do the arithmetic, and nobody does. And reading `input` alone makes
+    // the cost look near zero once caching takes hold, when it has only moved to
+    // `cache_read`.
+    if usage.cache_read > 0 || usage.cache_write > 0 {
+        println!(
+            "        effective input {} (uncached it would be {})",
+            trace::toks(usage.effective_input()),
+            trace::toks(usage.uncached_input())
+        );
+    }
+    println!("{} artifacts", written.len());
+    for path in &written {
+        let bytes = std::fs::metadata(path).map(|m| m.len()).unwrap_or(0);
+        // Size comes first for alignment. With the name first, a Korean filename takes
+        // twice the width and padding like `{:<28}` goes crooked.
+        println!(
+            "  {:>8}  {}",
+            trace::size(bytes),
+            path.file_name().unwrap_or_default().to_string_lossy()
+        );
+    }
+    if queries > 0 {
+        println!(
+            "query log  {}  ({queries} calls, untruncated)",
+            out_dir.join(trace::QUERY_LOG).display()
+        );
+    }
+
+    // **What is checked is whether a shortlist came out, not whether files appeared.**
+    // Counting a run that stopped partway with only mail drafts as a success would make
+    // the check meaningless. And zero tool calls means the agent imitated commands in
+    // prose — which has actually happened.
+    // **If it reached for the answer key, this run's output cannot be used to evaluate.**
+    //
+    // Narrowing the tree only stops the file tools. `shell` is spawned on the host by the
+    // console server, so an absolute path goes anywhere — it cannot be prevented, so what
+    // is checked is whether it happened.
+    if !trace.escapes().is_empty() {
+        for cmd in trace.escapes() {
+            eprintln!(
+                "  ✗ outside the tree: {}",
+                cmd.lines().next().unwrap_or(cmd)
+            );
+        }
+        bail!(
+            "the agent reached the answer key or the scoring criteria outside the tree \
+             through the shell ({} times). This run's artifacts cannot be evaluated",
+            trace.escapes().len()
+        );
+    }
+
     if tool_calls == 0 {
         bail!(
-            "툴 호출이 0회다 (턴 {turns}, 종료 사유 {}). 에이전트가 명령을 실행하지 않고 \
-             텍스트로 적었을 가능성이 크다 — `system_tools()` 가 붙어 있는지 확인해라",
+            "zero tool calls ({turns} turns, finish reason {}). The agent most likely \
+             wrote commands as text instead of running them — check that `system_tools()` \
+             is attached",
             last_finish.as_deref().unwrap_or("?")
         );
     }
@@ -243,18 +372,87 @@ async fn main() -> Result<()> {
         .any(|p| p.file_name().is_some_and(|n| n == "00-shortlist.md"))
     {
         bail!(
-            "00-shortlist.md 가 없다 (산출물 {}개, 종료 사유 {}). Length 면 max_tokens 에 \
-             걸린 것이고, Stop 이면 쓰겠다고 말만 하고 턴을 끝낸 것이다",
+            "no 00-shortlist.md ({} artifacts, finish reason {}). Length means the \
+             response ran out of room; Stop means it said it would write and ended the turn",
             written.len(),
             last_finish.as_deref().unwrap_or("?")
         );
     }
 
-    println!("\n채점: eval/run_eval.py --score {}", out_dir.display());
     Ok(())
 }
 
-/// 디렉터리 바로 아래 파일들. 재귀하지 않는다 — 산출물은 한 층이다.
+/// Builds the directory this run uses as its tree and puts what the agent may read in it.
+///
+/// # Why the current directory is not mounted whole
+///
+/// The example directory holds things the agent must not see. `data/ground_truth.json`
+/// is the **answer key**, saying which of the 600 are planted and what each one tests;
+/// `data/candidates.json` is the entire source pool. Mount the whole directory and one
+/// `read` call reaches all of it.
+///
+/// So the tree holds only what this run needs.
+///
+/// # This is not a wall
+///
+/// Only the file tools are confined to the tree. **`shell` is not** —
+/// `cortex-local-console` spawns `sh -c` on the host and only matches `current_dir` to
+/// the session, so an absolute path goes anywhere. In a real run the agent wrote
+/// intermediate results to `/tmp` and those files stayed on the host.
+///
+/// What this does, then, is **narrow the default path**. Whether anything off limits was
+/// actually reached is answered at the end of the run by [`trace::Trace::escapes`].
+///
+/// ```text
+/// <out>/<jd>/          the root of the tree and where artifacts are written
+///   in/jd.md           the posting
+///   in/schema.sql      table definitions. The views are not here — see below
+/// ```
+///
+/// Inputs go under `in/` because of counting and scoring. On the same level as the
+/// artifacts, [`list_files`] would count them as artifacts and a reader's eye
+/// would pick up the posting.
+fn prepare(out_dir: &std::path::Path, jd: &std::path::Path) -> Result<std::path::PathBuf> {
+    let inputs = out_dir.join("in");
+    std::fs::create_dir_all(&inputs)
+        .with_context(|| format!("creating the working directory {}", inputs.display()))?;
+
+    std::fs::copy(jd, inputs.join("jd.md"))
+        .with_context(|| format!("copying the posting {}", jd.display()))?;
+    // Tables only. **`views.sql` deliberately does not go into the tree.**
+    //
+    // Every view is behind a command: `candidate_tenure` and `current_position` are folded
+    // into `search` and `read`, `candidate_brief` is what `search` stands on, and the
+    // distributions are `distribution`'s axes. Measured across three runs, the 87 free-form
+    // SQL statements touched a view five times, and all five asked for figures `read`
+    // already carries.
+    //
+    // Handing over the definitions contradicts what this example claims — that the command
+    // is the only way to the pool — and `location_distribution` was worse than unused: it
+    // reports `positions.location`, which drifts, while `--city` matches the normalized
+    // `candidates.city`. Two runs lost turns to that mismatch.
+    //
+    // The schema is copied from the repository as is. A transcribed copy would let the
+    // agent read stale definitions after the real schema changed, and that failure is
+    // silent — asking for a column that is gone merely errors, while missing one that
+    // exists leaves you unaware it was ever there.
+    let from = std::path::Path::new("sql").join("schema.sql");
+    std::fs::copy(&from, inputs.join("schema.sql"))
+        .with_context(|| format!("copying the schema {}", from.display()))?;
+
+    // A mount takes a host path. Left relative it would point somewhere else depending on
+    // the console server's working directory.
+    std::fs::canonicalize(out_dir).with_context(|| format!("resolving {}", out_dir.display()))
+}
+
+/// What the run produced, directly under the directory. It does not recurse — artifacts
+/// are one level.
+///
+/// **Not everything in there.** A record of the run shares the directory (`queries.log`,
+/// and the screen kept as `console.txt`), and so does prose written afterwards for a
+/// person — `SCENARIO.md`. Counted as artifacts they blur the one figure that says what
+/// came out. [`prompt`] fixes the filenames as `NN-<slug>.md`, so that shape is what
+/// identifies one.
 fn list_files(dir: &std::path::Path) -> Vec<std::path::PathBuf> {
     let mut out: Vec<_> = std::fs::read_dir(dir)
         .into_iter()
@@ -262,112 +460,61 @@ fn list_files(dir: &std::path::Path) -> Vec<std::path::PathBuf> {
         .flatten()
         .map(|e| e.path())
         .filter(|p| p.is_file())
+        .filter(|p| {
+            p.file_name()
+                .and_then(|n| n.to_str())
+                .is_some_and(is_artifact)
+        })
         .collect();
     out.sort();
     out
 }
 
-/// 툴 결과에서 화면에 흘릴 최대 줄 수.
-///
-/// 이 예제의 쿼리는 수백 행을 돌려준다(`MATCH 'rust'` 하나가 83행이다). 전부 흘리면
-/// 에이전트의 판단이 결과 표에 묻히므로 앞부분만 보이고 나머지는 줄 수로 알린다.
-const RESULT_LINES: usize = 8;
-
-/// 한 줄로 눕힌 인자가 이보다 길면 자른다.
-const ARGS_WIDTH: usize = 200;
-
-/// 한 메시지에서 화면에 흘릴 것을 만든다.
-///
-/// # `contents` 만 보면 정작 보여줄 것이 안 보인다
-///
-/// 이 함수는 처음에 `message.contents` 의 `Part::Text` 만 통과시켰다. 근거는 "콘솔
-/// 스트리밍이 이 예제의 목적이므로 보여줄 것은 에이전트의 말"이었는데, **그 근거가
-/// 결론을 뒤집는다** — 콘솔을 붙인 이유가 도구 왕래이고, 그러면 화면에 흘러야 할 것은
-/// 에이전트가 짜는 SQL 이다.
-///
-/// 그리고 도구 호출은 `contents` 에 없다. [`Message`] 가 `tool_calls` 라는 **별도
-/// 필드**에 담는다(`src/message/message.rs`). `contents` 만 훑는 한 몇 줄을 고쳐도
-/// SQL 은 절대 나타나지 않는다.
-///
-/// [`Message`]: ailoy::message::Message
-fn render(output: &ailoy::message::MessageOutput) -> String {
-    use ailoy::message::Part;
-
-    let msg = &output.message;
-    let mut out = String::new();
-
-    if msg.role == Role::Tool {
-        // 도구가 돌려준 것. 왼쪽 괘선으로 에이전트의 말과 구별한다.
-        let body = text_of(&msg.contents);
-        let mut lines = body.lines();
-        for line in lines.by_ref().take(RESULT_LINES) {
-            out.push_str("  │ ");
-            out.push_str(line);
-            out.push('\n');
-        }
-        let rest = lines.count();
-        if rest > 0 {
-            out.push_str(&format!("  └ … {rest}줄 더\n"));
-        }
-        return out;
-    }
-
-    out.push_str(&text_of(&msg.contents));
-
-    // 에이전트가 부른 도구. `tool_calls` 는 `Option<Vec<Part>>` 이므로 `iter().flatten()`
-    // 이 "없으면 0개" 를 그대로 처리한다.
-    for call in msg.tool_calls.iter().flatten() {
-        if let Part::Function { function, .. } = call {
-            out.push_str(&format!(
-                "\n▸ {} {}\n",
-                function.name,
-                args_line(&function.arguments)
-            ));
-        }
-    }
-    out
+/// `NN-<slug>.md` — two digits, a hyphen, and a markdown extension.
+fn is_artifact(name: &str) -> bool {
+    let mut head = name.chars();
+    let numbered = matches!(
+        (head.next(), head.next(), head.next()),
+        (Some(a), Some(b), Some('-')) if a.is_ascii_digit() && b.is_ascii_digit()
+    );
+    numbered && name.ends_with(".md")
 }
 
-/// 파트 목록에서 텍스트만 이어붙인다.
-fn text_of(parts: &[ailoy::message::Part]) -> String {
-    parts
-        .iter()
-        .filter_map(|part| match part {
-            ailoy::message::Part::Text { text } => Some(text.as_str()),
-            _ => None,
-        })
-        .collect()
-}
+#[cfg(test)]
+mod tests {
+    use clap::Parser;
 
-/// 툴 인자를 한 줄로 눕힌다.
-///
-/// 툴마다 인자 이름이 다르므로(`shell` 은 `command`, `read` 는 `file_path`) 키를 하나씩
-/// 알아보는 대신 **스칼라 값을 순서대로 잇는다.** 여섯 개 시스템 툴 전부에 통한다.
-///
-/// 여러 줄 SQL 을 한 줄로 접는 것은 화면에서 한 호출이 한 줄이어야 읽히기 때문이다.
-fn args_line(v: &ailoy::datatype::Value) -> String {
-    use ailoy::datatype::Value;
+    use super::{Args, list_files};
 
-    fn scalar(v: &Value) -> Option<String> {
-        match v {
-            Value::String(s) => Some(s.clone()),
-            Value::Unsigned(n) => Some(n.to_string()),
-            Value::Integer(n) => Some(n.to_string()),
-            Value::Float(f) => Some(f.to_string()),
-            Value::Bool(b) => Some(b.to_string()),
-            _ => None,
-        }
+    /// Running with no arguments has to find its posting.
+    #[test]
+    fn the_default_posting_is_in_the_example() {
+        let jd = std::path::Path::new(env!("CARGO_MANIFEST_DIR"))
+            .join(Args::parse_from(["headhunter"]).jd);
+        assert!(jd.is_file(), "no posting at {}", jd.display());
     }
 
-    let joined = match v {
-        Value::Object(map) => map.values().filter_map(scalar).collect::<Vec<_>>().join("  "),
-        other => scalar(other).unwrap_or_default(),
-    };
-    let flat = joined.split_whitespace().collect::<Vec<_>>().join(" ");
-    if flat.chars().count() > ARGS_WIDTH {
-        let head: String = flat.chars().take(ARGS_WIDTH).collect();
-        format!("{head}…")
-    } else {
-        flat
+    /// A run directory holds more than the run produced. `SCENARIO.md` is written after the
+    /// fact for a person to read, and `console.txt` is the screen kept as a record. Counted
+    /// among the artifacts they inflate the figure that says what came out.
+    #[test]
+    fn only_the_numbered_artifacts_are_counted() {
+        let dir = tempfile::tempdir().unwrap();
+        for name in [
+            "00-shortlist.md",
+            "01-someone.md",
+            "SCENARIO.md",
+            "console.txt",
+            "queries.log",
+        ] {
+            std::fs::write(dir.path().join(name), "x").unwrap();
+        }
+
+        let names: Vec<_> = list_files(dir.path())
+            .iter()
+            .map(|p| p.file_name().unwrap().to_string_lossy().into_owned())
+            .collect();
+
+        assert_eq!(names, ["00-shortlist.md", "01-someone.md"]);
     }
 }

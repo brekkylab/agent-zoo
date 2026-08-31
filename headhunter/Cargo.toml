@@ -6,26 +6,28 @@ rust-version = "1.95.0"
 license = "Apache-2.0"
 publish = false
 
-# NOTE: this manifest does not resolve yet.
-#
-# The example needs two things that are not on a public branch at the time of
-# writing: `cortex-execs/sqlite`, which registers `sqlite` as a delegated
-# executable, and the Bedrock wire in `ailoy`. Both exist and both are what the
-# committed run log was produced with. Pin the revisions here once they land.
-#
-# Until then this directory is the source, the data, and the evidence of one
-# real run. See `run_result/console.txt` for the terminal capture and
-# `run_result/SCENARIO.md` for what happened in it.
-
 [dependencies]
-ailoy = { git = "https://github.com/brekkylab/ailoy", branch = "feat/bedrock-wire" }
-cortex = { git = "https://github.com/brekkylab/cortex", branch = "volume-refined" }
-cortex-exec-sqlite = { git = "https://github.com/brekkylab/cortex", branch = "volume-refined" }
+ailoy = { git = "https://github.com/brekkylab/ailoy", rev = "2b35542c143250fb2de2f1a207c5e3feb23d5c0b" }
+# The console, the mount, and the executable this app registers with it.
+cortex = { git = "https://github.com/brekkylab/cortex", rev = "5da0e4d029d5bd3e258d224c3ffa5aaa3088f2f9" }
 anyhow = "1"
-clap = { version = "4", features = ["derive", "env"] }
+# `limits` is for `SQLITE_LIMIT_ATTACHED`; a read-only connection does not block `ATTACH`.
+rusqlite = { version = "0.40", features = ["bundled", "limits"] }
+futures-core = "0.3"
+# ailoy itself only loads `.env` under `#[cfg(test)]`, so the binary has to do it.
 dotenvy = "0.15"
+clap = { version = "4", features = ["derive", "env"] }
 futures = "0.3"
+# Not `std::process::Command` — `StdioClient` reads and writes the pipes on the runtime.
 tokio = { version = "1", features = ["macros", "rt-multi-thread"] }
 
+[dev-dependencies]
+serde_json = "1"
+tempfile = "3"
+tokio = { version = "1", features = ["macros", "rt-multi-thread"] }
+
+# `ailoy` pulls `cortex` in as a sibling path dependency, which does not exist inside its
+# git checkout — pin the same source here so the git dep resolves, and so the `cortex`
+# above and the one `ailoy` links against are the same crate.
 [patch."https://github.com/brekkylab/ailoy"]
-cortex = { git = "https://github.com/brekkylab/cortex", branch = "volume-refined" }
+cortex = { git = "https://github.com/brekkylab/cortex", rev = "5da0e4d029d5bd3e258d224c3ffa5aaa3088f2f9" }

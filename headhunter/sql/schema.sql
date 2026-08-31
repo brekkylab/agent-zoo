@@ -1,41 +1,41 @@
--- LinkedIn Recruiter 제품 UI 가 리크루터에게 보여주는 것을 미러링한다(spec §2.0).
--- 어떤 LinkedIn API 도 아니다 — 프로스펙팅 검색 API 는 존재하지 않고, `openToWork` 는
--- 2020년에 생긴 UI 기능으로 어떤 공식 API 에도 필드로 노출된 적이 없다.
--- 각 컬럼 뒤 주석은 대응하는 Recruiter 검색 필터명이다.
+-- Mirrors what the LinkedIn Recruiter product UI shows a recruiter (spec §2.0).
+-- Not any LinkedIn API: there is no prospecting search API, and `openToWork` is a 2020 UI
+-- feature that has never been exposed as a field on any official API.
+-- The comment after each column names the corresponding Recruiter search filter.
 
 CREATE TABLE candidates (
   id TEXT PRIMARY KEY,              -- urn:li:person:aBcD1234
   first_name TEXT NOT NULL,
   last_name TEXT NOT NULL,          -- First names / Last names
-  headline TEXT NOT NULL,           -- 함정 1(헤드라인 낚시)이 사는 곳
-  summary TEXT NOT NULL,            -- 서술 계층이 채운다
+  headline TEXT NOT NULL,           -- where trap 1 (headline bait) lives
+  summary TEXT NOT NULL,            -- filled by the narration layer
   city TEXT NOT NULL,
   country TEXT NOT NULL,            -- Locations
   industry TEXT NOT NULL,           -- Industries
   job_function TEXT NOT NULL,       -- Job functions
-  seniority TEXT NOT NULL,          -- Seniority. 함정 13 의 판정 근거
-  profile_language TEXT NOT NULL,   -- Profile languages. 함정 10
-  open_to_work INTEGER NOT NULL,    -- Open to work (Spotlight). 함정 7
+  seniority TEXT NOT NULL,          -- Seniority. The basis for judging trap 13
+  profile_language TEXT NOT NULL,   -- Profile languages. Trap 10
+  open_to_work INTEGER NOT NULL,    -- Open to work (Spotlight). Trap 7
   connections_count INTEGER NOT NULL,
-  last_updated_at TEXT NOT NULL,    -- 함정 8(오래된 프로필)
+  last_updated_at TEXT NOT NULL,    -- trap 8 (stale profile)
   public_profile_url TEXT NOT NULL
 );
 
 CREATE TABLE positions (
   candidate_id TEXT NOT NULL REFERENCES candidates(id),
-  ord INTEGER NOT NULL,             -- JSON 배열 순서. 정답지의 descriptions 순서와 맞춘다
-  title TEXT NOT NULL,              -- Job titles. current/past 구분은 end_year 로
-  company_name TEXT NOT NULL,       -- 표기가 흔들린다(spec §3.4)
-  company_urn TEXT NOT NULL,        -- 흔들려도 urn 은 같다
-  company_size TEXT NOT NULL,       -- Company sizes. 함정 13 의 다른 축
-  employment_type TEXT NOT NULL,    -- 함정 3(겸직)의 근거
-  workplace_type TEXT NOT NULL,     -- 함정 6
+  ord INTEGER NOT NULL,             -- JSON array order, aligned with the answer key's descriptions
+  title TEXT NOT NULL,              -- Job titles. current vs past is decided by end_year
+  company_name TEXT NOT NULL,       -- the spelling drifts (spec §3.4)
+  company_urn TEXT NOT NULL,        -- the urn stays the same through the drift
+  company_size TEXT NOT NULL,       -- Company sizes. Trap 13's other axis
+  employment_type TEXT NOT NULL,    -- the basis for trap 3 (concurrent employment)
+  workplace_type TEXT NOT NULL,     -- trap 6
   location TEXT NOT NULL,
-  description TEXT NOT NULL,        -- 서술 계층이 채운다
+  description TEXT NOT NULL,        -- filled by the narration layer
   start_year INTEGER NOT NULL,
   start_month INTEGER NOT NULL,
   end_year INTEGER,
-  end_month INTEGER,                -- NULL = 현직
+  end_month INTEGER,                -- NULL = current
   PRIMARY KEY (candidate_id, ord)
 );
 
@@ -63,22 +63,23 @@ CREATE TABLE certifications (
 CREATE TABLE languages (
   candidate_id TEXT NOT NULL REFERENCES candidates(id),
   name TEXT NOT NULL,
-  proficiency TEXT NOT NULL         -- NATIVE_OR_BILINGUAL 등
+  proficiency TEXT NOT NULL         -- NATIVE_OR_BILINGUAL and the like
 );
 
--- `openToWork` 는 boolean 하나가 아니다. 구직자가 입력하고 리크루터에게만 보이는 하위
--- 필드가 있다(Recruiter 문서). 함정 7(open_to_work=false 인 강한 적합)을 다룰 때 의미를
--- 갖는 구조이므로 별도 테이블이다.
+-- `openToWork` is not one boolean. It has sub-fields the candidate fills in that only
+-- recruiters see (Recruiter documentation). That structure matters when handling trap 7
+-- (a strong fit with open_to_work=false), so it is its own table.
 CREATE TABLE open_to_work_prefs (
   candidate_id TEXT NOT NULL REFERENCES candidates(id),
-  desired_title TEXT NOT NULL,      -- 최대 5개
+  desired_title TEXT NOT NULL,      -- up to five
   location_type TEXT NOT NULL,      -- On-site / Remote / Hybrid
   desired_location TEXT NOT NULL,
   start_date TEXT NOT NULL,
   employment_type TEXT NOT NULL
 );
 
--- **있는 사람만 행을 갖는다.** 함정 12(연락처 없음)가 행의 부재로 표현된다.
+-- **Only people who can be reached have a row.** Trap 12 (no contact) is expressed as
+-- the absence of one.
 CREATE TABLE contacts (
   candidate_id TEXT NOT NULL REFERENCES candidates(id),
   method TEXT NOT NULL,             -- inmail / referral
@@ -89,30 +90,32 @@ CREATE INDEX positions_by_candidate ON positions(candidate_id);
 CREATE INDEX skills_by_candidate ON skills(candidate_id);
 CREATE INDEX skills_by_name ON skills(name);
 
--- 검색은 FTS5 다. 임베딩(`sqlite-vec`)을 쓰지 않는 이유는 spec §2.3 에 있다 — 실측으로
--- 커버리지와 순위가 FTS5 와 완전히 일치했고, 도메인 배선이 범용 도구 안으로 들어가
--- 층 분리를 깨뜨린다.
+-- Search is FTS5. Why not embeddings (`sqlite-vec`) is in spec §2.3: measured coverage
+-- and ranking matched FTS5 exactly, and it would push domain wiring inside a
+-- general-purpose tool, breaking the layer split.
 --
--- **`headline` 과 `skills` 를 둘 다 담아야 한다.** 계획 B 가 실측했다: 코어 65명 중
--- `rust` 토큰 보유자가 31명이고, 그중 29명은 두 표면에 중복으로 갖지만 2명은 한 곳에만
--- 갖는다 —
+-- **It has to carry both `headline` and `skills`.** Plan B measured it: of the 65 core
+-- candidates, 31 carry a `rust` token; 29 of them have it on both surfaces, but 2 have it
+-- on only one —
 --
---   headline 만 : `headline-bait` 함정 (헤드라인에만 키워드가 있는 것이 그 함정의 정의)
---   skills 만   : `skills-without-evidence` 함정 (스킬 목록에만 있는 것이 정의)
+--   headline only : the `headline-bait` trap (having the keyword only there is its definition)
+--   skills only   : the `skills-without-evidence` trap (only in the list, by definition)
 --
--- 정의상 대체 표면이 없으므로 한쪽을 빼면 그 함정이 검색에 걸리지 않고, 검색 단계 함정이
--- 검색 결과에 없으면 함정이 아니다. 나머지 29명은 어느 쪽을 빼도 살아남으므로
--- **이 실패는 조용하다** — 데이터도 인덱스도 그럴듯하고 결과 크기도 정상이다.
+-- By definition neither has an alternative surface, so dropping one column takes that
+-- trap out of the search results — and a search-stage trap that is not in the results is
+-- not a trap. The other 29 survive either way, so **this failure is silent**: the data and
+-- the index both look right and the result sizes are normal.
 --
--- 서술 계층이 채워진 뒤에도 유효하다. 다른 후보는 `description` 으로 표면이 하나 늘지만
--- 이 둘은 늘 수 없다 — `skills-without-evidence` 는 description 에 키워드가 **없는 것이**
--- 함정이고, `headline-bait` 는 headline 에만 있는 것이 함정이다.
+-- This still holds after the narration layer is filled. Other candidates gain a surface
+-- through `description`, but these two cannot: `skills-without-evidence` is a trap
+-- precisely because the keyword is **absent** from the descriptions, and `headline-bait`
+-- because it is in the headline alone.
 CREATE VIRTUAL TABLE candidate_fts USING fts5(
   id UNINDEXED,
   headline,
   summary,
-  titles,        -- 포지션 title 을 공백으로 이어붙인 것
-  descriptions,  -- 포지션 description 을 이어붙인 것
-  skill_names,   -- 스킬 이름을 이어붙인 것
+  titles,        -- position titles joined by spaces
+  descriptions,  -- position descriptions joined
+  skill_names,   -- skill names joined
   tokenize = 'unicode61'
 );

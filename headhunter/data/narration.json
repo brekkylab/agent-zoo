@@ -166,9 +166,9 @@
     ]
   },
   "urn:li:person:1ajheltp": {
-    "summary": "Reese Merrick works across Python and Go on the backend, with PostgreSQL as the datastore and Kubernetes for deployment. At a company this small, Reese tends to own a feature end to end rather than one layer of it.",
+    "summary": "シニアバックエンドエンジニアとして、Python、PostgreSQL、Goを中心に、スケーラブルで堅牢なバックエンドシステムの設計・開発に従事しています。分散システムやKubernetesなどの最新技術を活用し、大規模なインフラストラクチャの構築と最適化を得意としています。Java、PostgreSQLなども含め、多様な技術スタックでの開発経験があります。",
     "descriptions": [
-      "As 서버 개발자 at Glasswing Works Corporation, Reese has written backend services in Python and Go since August 2024, picking whichever language the existing service used, with PostgreSQL and Kubernetes work included."
+      "Glasswing Works Corporationでサーバー開発者として、バックエンドシステムの開発・保守に携わっています。Python、Go、PostgreSQLなどを活用した高性能なサーバー実装、および分散システムの設計・運用を担当しており、Kubernetesを用いたコンテナオーケストレーション環境での開発を推進しています。"
     ]
   },
   "urn:li:person:1b0r0n6n": {
@@ -211,16 +211,16 @@
     ]
   },
   "urn:li:person:1qoq00ng": {
-    "summary": "Morgan Underhill has built a frontend career around React, CSS, and TypeScript, keeping the same title through a move between two large companies. The shift to a much larger company meant more component reuse across teams, not a change in stack.",
+    "summary": "React、CSS、TypeScriptを活用したフロントエンド開発に携わるエンジニア。ユーザー中心の設計と最新のウェブ技術を組み合わせて、高品質なインターフェースの構築に注力しています。",
     "descriptions": [
-      "At Glasswing Networks, a 501-1,000 person company, Morgan worked as Frontend Engineer from August 2018 to September 2025, building product features in React and TypeScript and maintaining CSS conventions for one product area.",
-      "Since September 2025, Morgan has held the same title at Junipex, a company of 1,001-5,000 employees, where React components now need to be written for reuse across several product teams rather than a single one."
+      "Glasswing Networksでフロントエンドエンジニアとして、Reactを用いた動的なウェブアプリケーションの開発に従事。CSSとTypeScriptを駆使して、スケーラブルで保守性の高いコンポーネント設計に貢献しました。",
+      "Junipexでフロントエンドエンジニアとして、モダンなウェブ技術を活用したユーザーインターフェースの開発を担当。ReactとTypeScriptの知見を活かし、品質の高いコード実装に取り組んでいます。"
     ]
   },
   "urn:li:person:1qzaows8": {
-    "summary": "Iris Brennan works primarily in Go and rust-lang on the backend, with PostgreSQL as the datastore underneath. At a mid-sized company split into distinct teams, Iris owns a specific domain and defines the interface other teams use to call into it.",
+    "summary": "シニアバックエンドエンジニアとして、PostgreSQL、rust-lang、Goを用いたバックエンド開発に従事しています。スケーラブルで信頼性の高いシステム設計・構築を専門としており、エンタープライズレベルのインフラストラクチャ開発に貢献しています。",
     "descriptions": [
-      "Since August 2019, Iris has worked as Senior Backend Engineer at Kelpstone, a 201-500 person company, owning a domain built in Go with PostgreSQL underneath, and rewriting the slowest parts in rust-lang."
+      "Kelpstoneでシニアバックエンドエンジニアとして、PostgreSQL、rust-lang、Goを活用したバックエンドシステムの設計・開発を担当しています。パフォーマンス最適化、データベース管理、アーキテクチャ設計などの領域で技術的リーダーシップを発揮し、チームの技術基盤強化に貢献しています。"
     ]
   },
   "urn:li:person:1u6e1vw7": {
@@ -290,9 +290,9 @@
     ]
   },
   "urn:li:person:29d0nhb4": {
-    "summary": "Nova Vance builds frontend interfaces in React and TypeScript, with CSS and accessibility as constant concerns and enough WebAssembly experience to reach for it when rendering gets too slow for CSS alone.",
+    "summary": "シニアフロントエンドエンジニアとして、React、CSS、WebAssemblyを専門とする技術者です。TypeScriptとアクセシビリティに関する深い知識を持ち、ユーザー中心で高品質なWebアプリケーション開発に従事しています。",
     "descriptions": [
-      "From February 2024 to February 2026, Nova worked as Senior Frontend Engineer at Nightjar Dynamics Co., Ltd., rebuilding a slow-rendering React view with a WebAssembly module and cleaning up the CSS around it, while keeping the result compliant with the team's accessibility requirements throughout."
+      "Nightjar Dynamics Co., Ltd.でシニアフロントエンドエンジニアとして、React、CSS、WebAssemblyを活用したフロントエンド開発を担当。TypeScriptによる堅牢なコード実装とアクセシビリティ標準への準拠を通じて、スケーラブルで使いやすいWebアプリケーションの構築に貢献。"
     ]
   },
   "urn:li:person:2fr1n6t5": {
@@ -350,10 +350,10 @@
     ]
   },
   "urn:li:person:2vqtrqt9": {
-    "summary": "Senior ML engineer who has spent this entire career at small teams, which meant owning the full stack from CUDA-level training optimization to the Kubernetes infrastructure serving models in production. Python and PyTorch are the daily tools; there's rarely anyone else to hand a piece of the pipeline off to.",
+    "summary": "シニア機械学習エンジニアとして、PyTorch、CUDA、Pythonを活用した機械学習モデルの開発と実装に専門性を持っています。Kubernetes、MLOpsなどの先端技術を駆使して、スケーラブルで効率的な機械学習システムの構築と運用に従事しています。",
     "descriptions": [
-      "At a small company, was the only person touching the training infrastructure, writing CUDA kernels by hand to squeeze more throughput out of the PyTorch training loop before the team could afford more GPUs.",
-      "Carried that infrastructure ownership into deploying the models themselves, setting up the Kubernetes cluster that serves inference traffic and writing the autoscaling rules by hand."
+      "Larkfield Labsにおいてシニア機械学習エンジニアとして、PyTorchおよびCUDAを用いた高度な機械学習モデルの開発に携わりました。Pythonを主要な開発言語として、データサイエンスと機械学習の実装を推進し、チームの技術的基盤を構築しました。",
+      "Larkfield Platformでシニア機械学習エンジニアとして、機械学習モデルの開発運用を担当しています。PyTorch、CUDA、Pythonの知識を活かしながら、KubernetesおよびMLOpsの実践を通じて、本番環境での機械学習システムの最適化と管理を実現しています。"
     ]
   },
   "urn:li:person:2yei5rq7": {
@@ -437,15 +437,15 @@
     ]
   },
   "urn:li:person:3xlci6gs": {
-    "summary": "Senior infrastructure engineer focused on observability within a function-split team, deciding what gets monitored across Kubernetes clusters and running the quarterly AWS cost reviews. Networking and Linux fundamentals underpin most of the debugging work.",
+    "summary": "AWS、Kubernetes、Linuxを中心としたインフラエンジニアリングの専門家です。Observabilityとネットワーキングの知識を活かし、スケーラブルで信頼性の高いシステム構築に取り組んでいます。シニアレベルの技術力と経験を持ち、クラウドインフラの設計・運用・最適化を推進しています。",
     "descriptions": [
-      "Owns the observability stack for an infrastructure team split by function, deciding what gets instrumented across the company's K8s clusters and chasing down alerts that turn out to be networking flukes rather than real incidents."
+      "Larkfield Dynamicsのシニアインフラエンジニアとして、AWS環境の設計・構築・運用に従事しています。Kubernetes環境の管理、Linuxシステムの最適化、Observability基盤の整備を通じて、エンタープライズレベルのインフラストラクチャの信頼性と効率性を実現しています。ネットワーキング知識を活かしたシステムアーキテクチャの改善にも関わっています。"
     ]
   },
   "urn:li:person:3y9vnk1p": {
-    "summary": "Senior infrastructure engineer on a small team where Networking, Linux, AWS, and Kubernetes responsibilities are all shared among a handful of people. Recently took the initiative to rewrite a slow provisioning script in Rust, largely without close review given the team's size.",
+    "summary": "シニアインフラエンジニアとして、Networking、Linux、AWSを中心にインフラストラクチャの設計・構築・運用に携わっています。Kubernetes、Rustなどの最新技術にも精通し、スケーラブルで堅牢なシステム基盤の実現に貢献しています。",
     "descriptions": [
-      "Joined a small infrastructure team where a handful of people cover everything from Networking to Kubernetes, and has taken on rewriting a slow AWS provisioning script in Rust alongside day-to-day Linux server maintenance."
+      "Draftwell Worksにてシニアインフラエンジニアとして、クラウドインフラの設計・構築・最適化を担当。AWSを活用したネットワークアーキテクチャの構築、Linuxベースのシステム運用、Kubernetesによるコンテナオーケストレーション、Rustを用いた高性能ツール開発など、多層的なインフラストラクチャソリューションを提供しています。"
     ]
   },
   "urn:li:person:3yxn1hzi": {
@@ -850,9 +850,9 @@
     ]
   },
   "urn:li:person:8f2v0usn": {
-    "summary": "Owns a narrow slice of the team's model training pipeline, mostly the PyTorch data loading code for a transformer model other engineers designed. Learning the team's Kubernetes-based MLOps setup by fixing the parts that break rather than reading the whole thing end to end.",
+    "summary": "機械学習エンジニアとして、PyTorch、MLOps、Kubernetes (K8s)を専門としています。Transformersを含む最新の機械学習技術を活用し、実践的なプロジェクトに取り組んでいます。",
     "descriptions": [
-      "Rewrote the PyTorch data loading pipeline for a transformer model after it became the bottleneck in the team's training runs, cutting the idle time GPUs spent waiting on the next batch."
+      "Junipex Networks Inc.でML Engineerとして、機械学習モデルの開発と運用に従事しています。PyTorchとTransformersを用いたモデル構築、MLOpsとKubernetes (K8s)を活用したシステムの構築・運用を行っています。"
     ]
   },
   "urn:li:person:8igc5xqu": {
@@ -877,17 +877,17 @@
     ]
   },
   "urn:li:person:8nuode6m": {
-    "summary": "Writes Terraform for AWS infrastructure that other teams' 쿠버네티스 workloads run on top of, so most incidents start as someone else's pod crash and end as a node group misconfiguration she has to untangle. Moved to a larger company with a much slower review process.",
+    "summary": "シニアインフラエンジニアとして、クラウドインフラストラクチャの設計と構築に従事しています。Terraform、쿠버네티스、AWSを活用した大規模システムの運用と最適化を専門としています。インフラエンジニアリングにおける実践的な知見を活かし、組織のインフラストラクチャ戦略の推進に貢献しています。",
     "descriptions": [
-      "Managed the Terraform configuration for the AWS node groups backing the company's 쿠버네티스 clusters, and traced a recurring pod eviction issue to a node group instance type with less memory headroom than the workloads actually needed.",
-      "At a larger company, took over a more heavily reviewed Terraform codebase for AWS infrastructure underlying several teams' 쿠버네티스 workloads, restructuring how changes were batched afterward."
+      "Peatmoor Systemsでシニアインフラエンジニアとして、クラウドベースのインフラストラクチャの設計・構築・運用を担当しました。Terraform、쿠버네티스、AWSを用いて、スケーラブルで信頼性の高いシステムの実装に取り組みました。",
+      "Mossbank Technologiesでシニアインフラエンジニアとして、エンタープライズレベルのインフラストラクチャ管理を行っています。Terraform、쿠버네티스、AWSを活用した自動化とシステム最適化により、組織全体のインフラエンジニアリング体制を強化しています。"
     ]
   },
   "urn:li:person:8ouvcgpg": {
-    "summary": "Came in on a fixed-scope contract to rebuild a specific Kotlin Android module, then moved to a smaller company for a permanent Android and iOS role. Manages a small mobile team now, mostly deciding which platform gets a feature first when engineering time is limited.",
+    "summary": "モバイルエンジニアとして、Kotlin、iOS、Androidを用いたアプリケーション開発に従事してきました。シニアレベルでの開発経験を持ち、複数のプラットフォームに対応した堅牢なモバイルソリューションの構築に貢献してきました。",
     "descriptions": [
-      "Brought in on a fixed-scope contract to rebuild a Kotlin module handling offline sync for the Android app, and pushed back on requests to expand the work beyond the agreed scope, flagging them as separate follow-up tickets instead.",
-      "Took a permanent role managing a small Android and iOS team, and introduced a practice of scoping feature work as tightly as a contract engagement, which cut down on features quietly growing in size mid-sprint."
+      "Cindershift Dynamicsでシニアモバイルエンジニアとして、Kotlin、iOS、Androidプラットフォームでのモバイルアプリケーション開発に携わりました。複数のプラットフォーム対応による質の高い開発実装を推進しました。",
+      "Emberpath Technologiesでシニアモバイルエンジニアとして、Kotlin、iOS、Androidを活用したモバイルソリューションの設計・開発に従事してきました。プラットフォーム横断的な開発知見を活かし、スケーラブルで信頼性の高いアプリケーションの構築に貢献しています。"
     ]
   },
   "urn:li:person:8rs80uy8": {
@@ -960,10 +960,10 @@
     ]
   },
   "urn:li:person:9ctuxkwo": {
-    "summary": "Infrastructure engineer who spent years as the only person handling everything from Terraform modules to on-call at a very small company, then moved to a mid-sized org where the work is now split across a dedicated platform team. AWS and kubernetes-admin work carried over into both.",
+    "summary": "シニアインフラエンジニアとして、クラウドインフラストラクチャとコンテナオーケストレーションの設計・構築に従事しています。Terraform、AWS、Kubernetesを中心とした最新のインフラ技術を活用し、スケーラブルで信頼性の高いシステムの実現に貢献しています。",
     "descriptions": [
-      "Was the sole infrastructure person at a ten-person company, writing every Terraform module from scratch and provisioning AWS accounts before any standard existed. Carried the on-call pager alone and built the first kubernetes cluster the product ever ran on.",
-      "Joined a platform team with its own domain, taking over Terraform modules for the networking layer while other engineers own compute and storage. Spends part of the week on kubernetes-admin tasks like node pool upgrades and interfacing with the security team on AWS IAM policy."
+      "Oakhelm Networksのシニアインフラエンジニアとして、クラウドベースのインフラストラクチャの設計と実装を担当しました。Terraformを用いたインフラストラクチャのコード化、AWSの各種サービスの構築・管理、およびKubernetesクラスターの運用を推進し、システムの信頼性と効率性の向上に貢献しました。",
+      "Mossbank Networksのシニアインフラエンジニアとして、組織全体のインフラストラクチャ戦略の推進に携わっています。Terraform、AWS、Kubernetesなどの最新技術を駆使し、スケーラブルで堅牢なシステムの構築・運用に従事しています。"
     ]
   },
   "urn:li:person:9d296bif": {
@@ -1185,10 +1185,10 @@
     ]
   },
   "urn:li:person:bksed33t": {
-    "summary": "Backend engineer (서버 개발자) who works on distributed systems using Java, Go, and PostgreSQL. Has moved from a mid-size company to a much smaller one, taking on a broader scope of ownership in the process and now handling parts of the stack that used to belong to a separate data team.",
+    "summary": "バックエンドエンジニアとして、分散コンピューティング、Java、PostgreSQL、Goを専門とします。サーバー開発における豊富な経験を持ち、スケーラブルで堅牢なシステムの設計・実装に従事してきました。",
     "descriptions": [
-      "Worked on a Java-based distributed system at Cindershift Labs, focusing on the PostgreSQL data layer for a service that handled a high volume of concurrent writes. Contributed to a Go-based internal tool used for debugging replication lag.",
-      "After moving to the much smaller Kelpstone Platform, took on end-to-end ownership of a distributed backend service - from initial Go implementation to the PostgreSQL schema backing it."
+      "Cindershift Labsでサーバー開発者として、分散システムの設計と実装に取り組みました。Javaおよび関連技術を活用し、高性能なバックエンドシステムの構築に貢献しました。",
+      "Kelpstone Platform Co., Ltd.でサーバー開発者として、PostgreSQLおよびGoを用いたサーバーサイド開発に従事しています。分散コンピューティングの知見を活かし、プロダクト開発を推進しています。"
     ]
   },
   "urn:li:person:bn45smt1": {
@@ -1457,10 +1457,10 @@
     ]
   },
   "urn:li:person:d3udwofy": {
-    "summary": "Backend engineer whose PostgreSQL and Python work started as a fixed-scope contract building a single service to spec, and has since grown into a full-time role owning both the service and its Kubernetes deployment, with an ongoing shared-schema relationship with a neighboring team.",
+    "summary": "Kubernetes、Python、PostgreSQLを専門とするシニアバックエンドエンジニア。複数の企業でBackend Engineer IIとして、スケーラブルなバックエンドシステムの開発と運用に携わっています。",
     "descriptions": [
-      "Brought in on a fixed-scope contract to build a PostgreSQL-backed service from a defined spec, without touching the surrounding Kubernetes deployment setup that another team owned. Delivered the Python API layer and handed it off once the agreed scope was complete.",
-      "Converted that contract experience into a full-time role owning a backend domain, this time also responsible for the Kubernetes manifests and rollout process. Works closely with a neighboring team on the PostgreSQL schema they share."
+      "Draftwell LabsでBackend Engineer IIとして、Kubernetes環境でのバックエンド開発を担当。Python及びPostgreSQLを活用したシステム構築に従事しました。",
+      "Peatmoor Systems Inc.でBackend Engineer IIとして、エンタープライズ規模のバックエンドシステム開発を推進。Kubernetes、Python、PostgreSQLのスキルを活かした信頼性の高いインフラストラクチャの実装に取り組んでいます。"
     ]
   },
   "urn:li:person:d6qw4mkt": {
@@ -1490,9 +1490,9 @@
     ]
   },
   "urn:li:person:dc0twdjr": {
-    "summary": "Owns one section of a larger frontend product, built in CSS and React, coordinating shared component changes across sister teams. Has also ported a legacy Vue widget to React and TypeScript, run an early WebAssembly spike for a data-heavy chart, and reviews accessibility fixes for the wider team.",
+    "summary": "フロントエンドエンジニアとして、React、Vue、CSSを用いたWebアプリケーション開発に従事しています。TypeScriptやWebAssembly、アクセシビリティなど、モダンなフロントエンド技術全般に対応できます。",
     "descriptions": [
-      "One section of a larger frontend product is this person's responsibility, built in CSS and React, with shared component changes coordinated across two sister teams. A side project ported a legacy Vue widget to React and TypeScript, and accessibility fixes from the wider team come through this person for review."
+      "Quantile Dynamicsにおいてフロントエンドエンジニアとして、React・Vue等のフレームワークを活用したWebアプリケーション開発に携わっています。CSS、TypeScript、WebAssembly、アクセシビリティなどの技術を用いて、ユーザー体験の向上と品質の高いコード実装を目指しています。"
     ]
   },
   "urn:li:person:dh65cxdv": {
@@ -1602,9 +1602,9 @@
     ]
   },
   "urn:li:person:enf7wq57": {
-    "summary": "Backend engineer who picked up Rust on the job after noticing a Java service struggling under load. Splits most of the week between service code and small internal tooling, and treats language choice as a means to an end rather than an identity.",
+    "summary": "バックエンドエンジニアとして、Java、Rust、Pythonを主に使用して開発に従事しています。技術スタックはGoも含め、多言語での開発経験を積んでいます。",
     "descriptions": [
-      "Joined an existing order-processing service and has been rewriting one of its hottest code paths from Java into Rust to cut tail latency. Writes small Go tools on the side for the team's deploy checks, and reaches for Python for one-off data backfills when a migration goes wrong."
+      "Glasswing Dynamics Corporationでバックエンドエンジニアとして勤務。Java、Rust、Pythonなどの言語を用いてバックエンド開発を担当しています。"
     ]
   },
   "urn:li:person:enqhr58x": {
@@ -1627,10 +1627,10 @@
     ]
   },
   "urn:li:person:ewj15hw0": {
-    "summary": "Has built a data stack alone and also joined one that already existed, and tends to prefer the version with an owner already in place to hand things off to. Comfortable across the full Python, Airflow, and Snowflake chain, with Kafka streaming coming up most often now.",
+    "summary": "シニアデータエンジニアとして、Python、Airflow、Snowflakeなどの最新技術を活用し、大規模データパイプラインの設計・構築・運用に従事してきました。Kafka、SQLを含む幅広いデータエンジニアリングスキルを持ち、複数の組織での経験を通じて、スケーラブルなデータインフラストラクチャの構築に貢献してきました。",
     "descriptions": [
-      "Built the company's first data warehouse from scratch — raw ingestion scripts in Python, a Snowflake schema designed from the ground up, and the SQL views the rest of the company still queries directly.",
-      "Joined an established Airflow platform instead of building one, focusing on a single Kafka-fed pipeline that streams order events into Snowflake for the fraud team to query."
+      "Nightjar Networksにおいてシニアデータエンジニアとして、Python、Airflow、Snowflakeを中心としたデータパイプラインの設計・開発・保守を担当しました。Kafkaを用いたリアルタイムデータ処理とSQLによるデータ分析基盤の構築に携わり、エンタープライズレベルのデータインフラストラクチャの実装を推進しました。",
+      "Glasswing Technologiesにおいてシニアデータエンジニアとして、大規模組織内でのデータエンジニアリングプロジェクトに従事しています。Python、Airflow、Snowflakeなどのツールを活用し、複雑なデータワークフローの構築・最適化を通じて、データドリブンな意思決定基盤の整備に貢献しています。"
     ]
   },
   "urn:li:person:ews94o5w": {
@@ -1649,9 +1649,9 @@
     ]
   },
   "urn:li:person:f3glijgq": {
-    "summary": "Backend engineer whose title stayed 백엔드 엔지니어 while the job grew into platform work — a migration tool now used company-wide, and the Kubernetes operator that keeps it running. Prefers building something once, well, over a dozen teams reinventing it.",
+    "summary": "バックエンドエンジニアとしてPostgreSQL、Java、Kubernetesを活用した開発に従事しています。マネージャーレベルの経験を持ち、スケーラブルなシステムの構築と運用に携わっています。",
     "descriptions": [
-      "Led a company-wide effort to standardize how services handle PostgreSQL schema migrations, replacing a dozen different ad hoc approaches with one Java-based migration tool that other teams now install as a dependency. Also maintains the Kubernetes operator that runs it."
+      "Junipex Co., Ltd.でバックエンドエンジニアとして、PostgreSQL、Java、Kubernetesを用いたシステム開発に取り組んでいます。クラウドネイティブな環境でのアプリケーション設計・実装から運用まで、幅広い技術領域をカバーしています。"
     ]
   },
   "urn:li:person:f3x5ov79": {
@@ -1770,9 +1770,9 @@
     ]
   },
   "urn:li:person:g3pki7mo": {
-    "summary": "Mobile engineer who consolidated separate iOS and Android checkout implementations into a single Flutter codebase, cutting down on the drift between Swift and Kotlin versions. Built a shared component library to keep the two platforms visually and behaviorally aligned going forward.",
+    "summary": "シニアモバイルエンジニアとして、Flutter、Swift、iOSを専門とし、モバイルアプリケーション開発において豊富な経験を持つ。Kotlin、Android、React Nativeを含む多言語・多プラットフォーム開発スキルを活かし、高品質なモバイルソリューションの構築に従事している。",
     "descriptions": [
-      "Built the Flutter-based checkout flow used across both iOS and Android apps, replacing separate Swift and Kotlin implementations that had drifted out of sync. Set up a shared component library so the checkout screens for both platforms use the same underlying widgets."
+      "Nightjar Dynamicsにおいてシニアモバイルエンジニアとして従事。Flutter、Swift、iOS開発を中心に、Kotlin、Android、React Nativeなどの技術を活用し、モバイルアプリケーションの設計・開発・保守に責任を持つ。"
     ]
   },
   "urn:li:person:g3z733lp": {
@@ -2016,10 +2016,10 @@
     ]
   },
   "urn:li:person:hxmqq1x1": {
-    "summary": "ML engineer working in PyTorch and CUDA, brought in on a short contract before converting to a full-time role owning the ML domain at a mid-size platform team. The contract-to-full-time path meant moving from a narrowly scoped optimization task into end-to-end responsibility for a model.",
+    "summary": "機械学習エンジニアとして、PyTorch、CUDA、Pythonを専門とする技術リーダーです。Transformersおよびデータオーケストレーションツールの深い知識を持ち、大規模機械学習システムの開発と運用に携わっています。マネージャーレベルのエクスペリエンスで、チーム主導のプロジェクト推進能力を備えています。",
     "descriptions": [
-      "Brought into Glasswing Systems on a six-month contract to optimize a Transformers model's CUDA kernels for inference latency, a scoped performance task rather than ongoing model ownership.",
-      "Owns the ML domain directly after converting to full-time at Emberpath Platform Corporation: training pipeline in PyTorch, deployment onto a Kubernetes (K8s) serving cluster, and coordination with the product team consuming the model's output."
+      "Glasswing Systemsにおいて、Senior ML Engineerとして機械学習システムの設計・開発に従事しました。PyTorchおよびCUDAを活用した高性能モデルの実装、Transformersを用いた最先端の自然言語処理ソリューションの構築に貢献しました。",
+      "Emberpath Platform Corporationで、Senior ML Engineerとして機械学習基盤の構築・運用を主導しています。PyTorch、CUDA、Pythonを駆使した大規模モデルの開発、Kubernetes (K8s)を活用したシステム運用、Transformersを用いた先端的な機械学習ソリューション実装に取り組んでいます。"
     ]
   },
   "urn:li:person:i55mwcda": {
@@ -2037,10 +2037,10 @@
     ]
   },
   "urn:li:person:i7ctpo77": {
-    "summary": "Staff-level backend engineer with a long run at one mid-size company, now working part time at a second organization on a Kafka-based distributed systems component. The part-time arrangement means contributing on a limited basis rather than driving the roadmap the way a staff engineer typically would.",
+    "summary": "バックエンドエンジニアとしてDistributed Systems、Python、Kafkaの専門知識を活かし、スケーラブルなシステム設計と構築に従事しています。Distributed Systems、Python、Kafka、rust-lang、Java、PostgreSQLを駆使して、複雑なバックエンド基盤の最適化と革新に取り組んでいます。",
     "descriptions": [
-      "Built out the company's core Python and Java backend services from early on at Junipex Works, later rewriting a latency-critical matching component in rust-lang and designing the PostgreSQL schema still used by the order system.",
-      "Contributes to a Kafka-based distributed systems project on a limited weekly basis at Quantile Platform under a part-time arrangement, rather than owning the roadmap outright."
+      "Junipex Worksでバックエンド領域のStaff Software Engineerとして、Distributed Systemsアーキテクチャの設計・実装に携わりました。Python、Kafka、Java、PostgreSQLを用いた大規模システムの構築と運用を通じて、スケーラビリティと信頼性の高いインフラストラクチャの確立に貢献しました。",
+      "Quantile PlatformでバックエンドのStaff Software Engineerとして、Distributed Systemsの最適化とKafkaを活用したデータストリーミング基盤の構築に従事しています。Python、rust-lang、JavaおよびPostgreSQLを駆使した技術的課題の解決を通じて、プラットフォームの成長を支えています。"
     ]
   },
   "urn:li:person:i9n2jauw": {
@@ -2097,10 +2097,10 @@
     ]
   },
   "urn:li:person:ikzzaf9r": {
-    "summary": "Data engineer who moved from a large organization's shared warehouse team to owning a smaller platform outright. Works across Spark, dbt, and Snowflake to turn scattered event data into models that analysts and product teams can trust.",
+    "summary": "データエンジニアとしてSpark、dbt、SQLを専門とするディレクターレベルの専門家です。Snowflakeやを活用したデータパイプラインの設計・構築、およびPythonによるデータ処理に精通しています。大規模なデータインフラストラクチャの構築と最適化を通じて、組織のデータ駆動型意思決定を支援しています。",
     "descriptions": [
-      "Built Spark pipelines that consolidated marketing and product event data into a single Snowflake warehouse. Wrote dbt models to standardize customer identifiers across systems that had each grown their own definitions.",
-      "Owns the analytics data platform end to end, from ingestion scripts in Python to the SQL models analysts query directly. Redesigned the dbt project structure so new tables could be added without breaking downstream dashboards."
+      "Nordwind Networksでシニアデータエンジニアとして従事。Spark、SQL、dbtを活用したデータパイプラインの設計・開発に携わり、データ処理基盤の構築と改善を推進。Snowflakeやその他ツールを組み合わせた効率的なデータソリューションの実装に貢献。",
+      "Nordwind Worksでシニアデータエンジニアとして勤務。Spark、dbt、SQLの高度な技術を駆使したデータエンジニアリング業務を遂行。Snowflakeプラットフォーム上での複雑なデータパイプライン構築やPythonによるデータ処理ロジックの開発を担当。データインフラの最適化と信頼性向上を実現。"
     ]
   },
   "urn:li:person:ink4835h": {
@@ -2302,10 +2302,10 @@
     ]
   },
   "urn:li:person:kevurgze": {
-    "summary": "Has spent an early career almost entirely inside large organizations, both times on teams whose output other product teams depend on rather than owning a single product. Pulls in WebAssembly when a rendering problem resists the usual React optimizations instead of settling for a slower screen.",
+    "summary": "フロントエンドエンジニアとして、CSS、React、WebAssemblyを用いた開発に従事しています。ユーザーインターフェースの構築とフロントエンド技術の実装に注力しています。",
     "descriptions": [
-      "Started on a large frontend platform team maintaining a shared component library consumed by several product teams. Wrote most of the CSS utility classes still referenced in the internal style guide today.",
-      "Moved to an even larger organization to work on a design system migration, porting legacy components to React one screen at a time. Also experimented with WebAssembly for a canvas-heavy dashboard that kept dropping frames."
+      "Mossbank Platformでフロントエンドエンジニアとして勤務。CSS、React、WebAssemblyなどの技術を活用して、ユーザー向けのWebアプリケーションの開発と保守を担当しました。",
+      "Nordwind Networksでフロントエンドエンジニアとして現在勤務中。最新のフロントエンド技術を用いた開発プロジェクトに携わり、Webアプリケーションの実装と改善を進めています。"
     ]
   },
   "urn:li:person:kg22wn3x": {
@@ -2386,10 +2386,10 @@
     ]
   },
   "urn:li:person:l5yiaoaj": {
-    "summary": "Went from personally owning a billing database to leading a 쿠버네티스 adoption that other teams now build on top of. Still reaches for Java and PostgreSQL directly when a problem is concrete enough to just fix rather than delegate.",
+    "summary": "バックエンドエンジニアとして、PostgreSQL、Java、쿠버네티스を活用したシステム開発に従事してきました。大規模なエンタープライズシステムの設計・構築・保守において、安定性とパフォーマンスを重視した開発を実践しています。",
     "descriptions": [
-      "Owned a Java-based billing service backed by PostgreSQL, handling schema migrations personally since the team had no dedicated DBA. Coordinated with the finance team directly whenever a migration risked affecting month-end reporting.",
-      "Moved to a larger company to lead adoption of 쿠버네티스 across several backend teams that had been running services directly on VMs. Wrote most of the initial deployment templates other teams still copy today."
+      "Finlogic Labs Inc.のシニアバックエンドエンジニアとして、PostgreSQLとJavaを用いたバックエンド基盤の開発・運用に携わりました。データベース設計から本番運用まで、包括的なエンジニアリングを担当し、システムの信頼性向上に貢献しました。",
+      "Cindershift Works Inc.のシニアバックエンドエンジニアとして、쿠버네티스環境でのマイクロサービスアーキテクチャ開発に従事しています。PostgreSQLとJavaを活用した堅牢なバックエンドシステムの構築・最適化に取り組んでいます。"
     ]
   },
   "urn:li:person:l6fe9tok": {
@@ -2420,9 +2420,9 @@
     ]
   },
   "urn:li:person:lneerpx6": {
-    "summary": "Quinn Vance works on a data engineering team that splits pipeline ownership by domain instead of having one person own everything end to end. Airflow and Python cover most of the daily work, and Kafka is newer territory as the team starts routing some jobs toward streaming instead of nightly batch runs.",
+    "summary": "データエンジニアとして、Airflow、Python、Kafkaを使用したデータパイプラインの構築と運用に取り組んでいます。データ処理システムの最適化と信頼性の向上に貢献することを目指しています。",
     "descriptions": [
-      "Took over a batch of Airflow DAGs that had accumulated silent failures because nobody owned alerting on them, and added notifications tied to task-level retries. Wrote the Python code that merges a new Kafka topic into a table that used to only get updated by the nightly batch job, without double-counting records."
+      "Larkfield Dynamicsでデータエンジニアとして、データパイプラインの設計・開発・運用を担当しています。Airflowを用いたワークフロー管理、Pythonでのデータ処理、Kafkaによるストリーミングデータの処理を行い、組織のデータインフラストラクチャの構築に貢献しています。"
     ]
   },
   "urn:li:person:lo9i3kom": {
@@ -3077,10 +3077,10 @@
     ]
   },
   "urn:li:person:rhc0aq9g": {
-    "summary": "Sage has spent a career on networking and AWS, the two things that quietly break everything else when they go wrong. Has led incident calls where the real problem was three layers away from where everyone was looking.",
+    "summary": "インフラエンジニアとしてネットワークとAWSの専門知識を活かし、大規模システムの構築・運用に従事しています。マネージャーレベルの経験を持ち、複数の組織でインフラストラクチャの最適化と信頼性向上を主導してきました。",
     "descriptions": [
-      "Redesigned the company's VPC peering setup after a misconfigured route table caused an outage that took hours to trace. Documented AWS security group changes going forward.",
-      "Leads the networking side of a larger infrastructure org, coordinating AWS load balancer changes across teams that used to make them independently and occasionally break each other's routing."
+      "Emberpath Technologiesでシニアインフラエンジニアとして、NetworkingとAWSを中心としたインフラストラクチャの設計・構築・運用を担当しました。システムの安定性と性能向上に貢献し、技術的な課題解決をリードしました。",
+      "Halcyonでシニアインフラエンジニアとして、大規模環境におけるNetworkingとAWSインフラストラクチャの構築・運用を推進しています。インフラストラクチャの最適化と技術的なベストプラクティスの導入を主導しています。"
     ]
   },
   "urn:li:person:ripq9yl6": {
@@ -3092,11 +3092,11 @@
     ]
   },
   "urn:li:person:rj286vic": {
-    "summary": "Morgan has built mobile apps in React Native, Swift, and Kotlin, moving between them as each job required rather than specializing in one, and has managed the tradeoff between shipping fast and rewriting for native performance.",
+    "summary": "モバイルエンジニアとして、React Native、Swift、Androidを中心に複数のプラットフォームでの開発経験を有しています。Kotlin、iOS、Flutterの技術も習得し、複雑なモバイルアプリケーションの設計・開発・最適化に従事してきました。マネージャーレベルの知見を活かし、技術的な課題解決とチーム開発を推進しています。",
     "descriptions": [
-      "Shipped the initial React Native version of the company's app, then rewrote its camera feature natively in Swift for iOS after the cross-platform version couldn't hit the frame rate the product team wanted.",
-      "Took over a small team's Android codebase written in Kotlin and its iOS counterpart in Swift, and introduced Flutter for a single new feature to avoid building it twice. Managed the tradeoffs between the three codebases as the only mobile lead, deciding case by case which one got the fix first.",
-      "Manages mobile engineers split across Android, iOS, and a React Native layer shared between both, coordinating release timing so a bug fix on one platform doesn't ship a version behind on the other. Still writes Kotlin directly for the parts of the app that need it."
+      "Foldgate Systems Inc.においてシニアモバイルエンジニアとして、複数のプラットフォーム向けモバイルアプリケーションの開発に携わりました。React Native、Swift、Androidを用いた実装、パフォーマンス最適化、アーキテクチャ設計など、モバイル開発全般における責任を担当しました。",
+      "Larkaieldでシニアモバイルエンジニアとして、モバイルアプリケーションの開発・保守・改善を主導しました。React Native、Kotlin、Flutterなどの最新技術を活用し、複数プラットフォーム対応のアプリ開発プロジェクトに貢献しました。",
+      "Peatmoor Networksではシニアモバイルエンジニアとして、大規模なモバイルアプリケーション開発に従事しています。Swift、Android、React Nativeなどのスキルを活かし、エンタープライズレベルのソリューション開発を推進しています。"
     ]
   },
   "urn:li:person:rlxhht40": {
@@ -3161,10 +3161,10 @@
     ]
   },
   "urn:li:person:s5ovilig": {
-    "summary": "Infrastructure engineer who moved from hands-on cluster building at a small company into a contract role scoped around observability at a much larger one. Built Terraform modules other teams now reuse and has strong opinions about alert fatigue.",
+    "summary": "インフラエンジニアとしての経験を活かし、Observability、Terraform、AWSを中心にインフラストラクチャの設計・構築・運用に従事しています。Networking、Kubernetes（K8s）にも精通しており、大規模システムの信頼性と効率性の向上を実現します。",
     "descriptions": [
-      "Set up the company's first AWS environment, writing the Terraform that provisioned networking, IAM, and the early Kubernetes cluster. Also handled on-call rotation design since the team was too small for a dedicated SRE function.",
-      "Brought in on contract to build an observability layer for a platform team's Kubernetes fleet. Delivered dashboards and alerting rules scoped to a single migration project, and documented the Terraform patterns so the in-house team could maintain them after the contract ends."
+      "Halcyon Worksでシニアインフラエンジニアとして、クラウドインフラの設計・構築・運用に取り組みました。Terraform、AWS、Observabilityなどの最新技術を活用し、システムの安定性とスケーラビリティの向上を推進しました。",
+      "Ironvale Technologies Corporationでシニアインフラエンジニアとして、大規模環境でのインフラストラクチャ構築と運用を主導しています。AWS、Kubernetes、Networking、Observabilityを駆使し、高可用性で信頼性の高いシステムの実現に貢献しています。"
     ]
   },
   "urn:li:person:s6dt2jkv": {
@@ -3200,9 +3200,9 @@
     ]
   },
   "urn:li:person:s9ul4rg7": {
-    "summary": "Backend engineer at a large technology company, working on a Java service that other product teams treat as a dependency rather than something they touch directly. Comfortable diagnosing PostgreSQL performance issues that only show up under real production load.",
+    "summary": "バックエンドエンジニアとしてPostgreSQL、分散システム、Javaを専門とするディレクタークラスのエンジニア。大規模システムの設計・開発・運用に携わり、技術的リーダーシップを発揮しています。",
     "descriptions": [
-      "Works on a shared account-data service used by dozens of internal product teams, so most changes go through a review process before they ship. Rewrote a set of PostgreSQL queries that were locking rows under peak traffic, and helped define the migration guide other teams follow when they adopt a new schema version."
+      "Draftwell Technologiesでバックエンド開発を担当。PostgreSQLやJava、Pythonを活用して、スケーラブルで信頼性の高いバックエンドシステムの構築と改善に従事。分散システムの設計・実装を通じて、複雑なインフラストラクチャ課題の解決に貢献しました。"
     ]
   },
   "urn:li:person:s9wk4bpr": {
@@ -3221,9 +3221,9 @@
     ]
   },
   "urn:li:person:sdc0eg0j": {
-    "summary": "Early-career frontend engineer who joined a mid-sized product team and has been picking up accessibility work that more senior engineers tend to skip. Comfortable in both React and Vue since parts of the codebase still run on each.",
+    "summary": "フロントエンドエンジニアとして、TypeScript、React、Vueを活用したWeb開発に従事しています。WebAssemblyやアクセシビリティなど、最新のフロントエンド技術にも取り組んでいます。",
     "descriptions": [
-      "Joined the checkout team and started by fixing TypeScript type errors left over from a rushed migration. Took ownership of an accessibility backlog nobody else wanted, fixing missing labels and keyboard focus order across the React checkout flow, and picked up enough CSS to redo the form layout that kept drawing complaints."
+      "Cindershift Technologiesでフロントエンドエンジニアとして勤務。TypeScript、React、Vueを用いたアプリケーション開発に携わっています。WebAssemblyやCSS、アクセシビリティ対応など、幅広いフロントエンド技術を活用しながらプロダクト開発を進めています。"
     ]
   },
   "urn:li:person:sdn1imno": {
@@ -3355,9 +3355,9 @@
     ]
   },
   "urn:li:person:tl2oimxs": {
-    "summary": "Works on frontend infrastructure shared across a large engineering organization, focusing on accessibility standards and component patterns that other teams' React and Vue applications build on top of, plus a WebAssembly module for one rendering path.",
+    "summary": "シニアフロントエンドエンジニアとして、CSS、Accessibility、Reactを専門とする。TypeScript、Vue、WebAssemblyを含む幅広い技術スタックに精通しており、ユーザー体験と技術的卓越性を重視した開発を推進している。",
     "descriptions": [
-      "Maintains shared accessibility standards and reusable TypeScript component patterns that other teams' React and Vue applications depend on, plus a WebAssembly module handling one performance-sensitive rendering path that plain CSS could not keep fast enough."
+      "Halcyon Systems Inc.におけるシニアフロントエンドエンジニアとして従事。CSS、Accessibility、Reactの専門知識を活かし、高品質で拡張性の高いフロントエンドソリューションの設計・実装に責任を持つ。TypeScript、Vue、WebAssemblyなどの技術を効果的に活用し、ユーザー中心のアプリケーション開発をリード。"
     ]
   },
   "urn:li:person:tps273ol": {
@@ -3383,10 +3383,10 @@
     ]
   },
   "urn:li:person:tt1s60qz": {
-    "summary": "Worked on shared networking components within a larger infrastructure organization before moving to a company where the same Terraform and AWS skills now cover a much wider slice of the stack, including Linux systems the previous role never touched.",
+    "summary": "インフラエンジニアとして、AWS、Networking、Terraformを中心にインフラストラクチャの構築・運用に従事しています。Linuxの知識を活かし、クラウド環境でのシステム設計と自動化に取り組んでいます。",
     "descriptions": [
-      "Worked on a shared networking layer within a larger infrastructure team, writing Terraform modules that other engineers used to provision AWS resources without needing to understand the underlying network design.",
-      "Took on a broader infrastructure role at a smaller company, managing AWS accounts, Linux servers, and networking configuration directly rather than through a dedicated platform team, and rewriting most of the Terraform setup along the way."
+      "Arborline Systemsでインフラエンジニアとして、クラウドインフラストラクチャの構築と運用を担当しました。AWSとTerraformを用いたインフラストラクチャのコード化や、ネットワーク設計など、基盤となるシステムの整備に従事しました。",
+      "Glasswing Labsでインフラエンジニアとして、AWS環境でのインフラストラクチャ設計・構築・運用を担当しました。Terraformによるインフラストラクチャのコード化、ネットワーク構成の最適化、Linuxシステムの管理など、スケーラブルで堅牢なインフラ環境の構築に注力しました。"
     ]
   },
   "urn:li:person:twihn123": {
@@ -3456,10 +3456,10 @@
     ]
   },
   "urn:li:person:uhe8igjm": {
-    "summary": "Has managed frontend teams at two organizations, both with dedicated frontend groups rather than a single generalist covering everything. Writes TypeScript across a mix of React and Vue codebases and treats CSS architecture as worth standardizing.",
+    "summary": "フロントエンドエンジニアとして、TypeScript、React、Vueを活用した最新のウェブアプリケーション開発に従事しています。マネージャーレベルのスキルを持ち、複数のプラットフォーム企業でシニアエンジニアとして貢献してきました。CSSを含む幅広いフロントエンド技術を専門としており、高品質なユーザーインターフェース実装に注力しています。",
     "descriptions": [
-      "Managed a group of frontend engineers building React components in TypeScript, and pushed through a CSS architecture standard that reduced how often styles from one feature leaked into another.",
-      "Took on a similar management scope at a different organization, this time overseeing a mixed React and Vue codebase and working through a plan to consolidate the two toward a single set of shared TypeScript components."
+      "Ironvale Platformでシニアフロントエンドエンジニアとして、TypeScript、React、Vueなどの最新技術を用いたフロントエンド開発を主導しました。CSS技術を駆使しながら、ウェブアプリケーションの実装と改善を推進しました。",
+      "Emberpath Platformでシニアフロントエンドエンジニアとして、TypeScript、React、Vueを活用したフロントエンド開発に従事しています。CSSを含むフロントエンド技術を用いて、ユーザーフレンドリーなインターフェース開発を担当しています。"
     ]
   },
   "urn:li:person:uk33c5bu": {
@@ -3575,9 +3575,9 @@
     ]
   },
   "urn:li:person:vj6dcwuf": {
-    "summary": "Frontend engineer maintaining the boundary between a React application and a WebAssembly module another team owns — the TypeScript bindings and CSS layout issues that surface when the two don't line up. Doesn't touch the module's internals directly.",
+    "summary": "フロントエンドエンジニアとして、WebAssembly、CSS、TypeScriptを用いたモダンなWeb開発に従事しています。Reactを活用したユーザーインターフェース構築の経験を持ち、パフォーマンスと使いやすさを兼ね備えたアプリケーション開発に取り組んでいます。",
     "descriptions": [
-      "Maintained the integration layer between a React application and a WebAssembly module another team built, handling the TypeScript bindings and CSS layout issues that came up when the module's output didn't match the surrounding page. Filed and triaged bugs at the boundary between the two teams' code."
+      "Kelpstone Systemsでフロントエンドエンジニアとして、TypeScriptとReactを用いたWebアプリケーションの開発に従事。WebAssemblyおよびCSSを活用し、高性能で視覚的に優れたユーザーインターフェースの実装を担当しました。"
     ]
   },
   "urn:li:person:vk1g7xhe": {
@@ -3747,10 +3747,10 @@
     ]
   },
   "urn:li:person:x5w1f5gp": {
-    "summary": "PyTorch and transformer models are the constant in this career, but the scope around them has shifted — from being the one person who built and shipped a model end to end, to owning a single stage of a pipeline other teams also touch.",
+    "summary": "シニア機械学習エンジニアとして、PyTorch、Python、SQLを中心に、MLOps、Transformers、CUDA、Kubernetesなどの先進技術を活用し、大規模機械学習システムの開発と運用に携わっています。深い技術知識と実装スキルを活かし、複雑な機械学習プロジェクトの設計・構築に貢献しています。",
     "descriptions": [
-      "Built a transformer-based document classifier from scratch at Nightjar Platform, handling everything from the SQL queries behind the training set to CUDA-level batch tuning and the PyTorch training loop itself.",
-      "Joined a team at Emberpath Technologies where model training, feature engineering, and serving are each owned by different people, taking responsibility specifically for the PyTorch training stage — tuning hyperparameters on the transformer model."
+      "Nightjar Platformでシニア機械学習エンジニアとして、機械学習モデルの開発・デプロイメント・運用を担当しました。PyTorchおよびTransformersを用いた高度なモデル構築、CUDAによるGPU最適化、SQLを活用したデータ処理など、エンドツーエンドの機械学習パイプライン構築に従事しました。",
+      "Emberpath Technologies Inc.でシニア機械学習エンジニアとして、MLOpsとKubernetesを活用した本番環境での機械学習システムの構築・保守を担当しています。PyTorch、Python、SQLなどの技術スタックを駆使し、スケーラブルで信頼性の高い機械学習インフラストラクチャの開発に取り組んでいます。"
     ]
   },
   "urn:li:person:x69a2ot2": {
@@ -3779,9 +3779,9 @@
     ]
   },
   "urn:li:person:xa8gup6h": {
-    "summary": "Early-career backend work built on Java, at a company small enough that a junior engineer ends up touching both application code and the 분산 시스템 decisions usually reserved for someone more senior. The line between junior and senior work is thin here.",
+    "summary": "バックエンドエンジニアとして、Kubernetes、Java、分散システムの技術を活かし、スケーラブルで信頼性の高いシステム開発に取り組んでいます。",
     "descriptions": [
-      "Implements new endpoints in Java for Emberpath Labs' order service and has been pulled into 분산 시스템 design discussions about how that service should talk to a newer one, since the team is too small to separate the two."
+      "Emberpath Labsでバックエンドエンジニアとして、Kubernetes、Java、分散システムの知識を用いたシステム開発に従事しています。"
     ]
   },
   "urn:li:person:xlb4wh27": {
@@ -3792,10 +3792,10 @@
     ]
   },
   "urn:li:person:xm60l3rl": {
-    "summary": "Frontend work spanning two very different scales — a long stretch inside a large organization's established component system, followed by a move to a small company building its frontend architecture from a much thinner base.",
+    "summary": "フロントエンドエンジニアとして、CSS、WebAssembly、Reactを専門とし、ユーザーインターフェースの設計と開発に従事してきました。アクセシビリティを重視した高品質なウェブ体験の構築に取り組んでいます。Vue.jsなど複数のフレームワークにも精通しており、モダンなフロントエンド技術の実装と最適化に貢献しています。",
     "descriptions": [
-      "Contributed to Halcyon Systems' shared component library used across a dozen internal product teams, focusing on accessibility fixes and a WebAssembly-based image processing module other teams' React components could drop in without reimplementing.",
-      "Has been rebuilding the frontend's styling layer in CSS from a Vue codebase that had accumulated years of overrides since moving to Emberpath Works, with no separate design systems team to hand the work off to."
+      "Halcyon Systemsでシニアフロントエンドエンジニアとして、大規模プロジェクトにおけるフロントエンド開発を主導しました。CSS、React、WebAssemblyを活用して、スケーラブルで保守性の高いウェブアプリケーションの構築に従事し、アクセシビリティ標準に準拠した実装を推進しました。",
+      "Emberpath Worksではシニアフロントエンドエンジニアとして、フロントエンド開発チームの中核メンバーとして活動しています。React、Vue、WebAssemblyなどの最新技術を駆使し、ユーザー中心のインターフェース設計と開発に注力しており、アクセシビリティとパフォーマンスの向上に貢献しています。"
     ]
   },
   "urn:li:person:xmfcw197": {
@@ -3805,10 +3805,10 @@
     ]
   },
   "urn:li:person:xpqy2cvj": {
-    "summary": "Backend systems work that moved from building something from nothing to maintaining something many other teams already depend on — the difference between a small company's first Kafka pipeline and a large one's existing distributed systems standards.",
+    "summary": "バックエンドエンジニアとして、Python、Kafka、Rust Langを用いた分散システムの設計・開発に従事してきました。マネージャーレベルの経験を持ち、スケーラブルなバックエンド基盤の構築と技術的な課題解決を得意としています。",
     "descriptions": [
-      "Introduced Kafka to Junipex Works Inc. as the company's first event-driven pipeline, writing the initial Python consumers and later rewriting the busiest one in Rust Lang after it became a bottleneck.",
-      "Works within an established distributed systems framework that other backend teams also build on at Oakhelm Labs, contributing changes to the shared Kafka client library used company-wide rather than running a pipeline specific to one team."
+      "Junipex Works Incにおいて、バックエンド基盤の設計・開発・運用を担当するStaff Software Engineerとして勤務しました。分散システムの構築やKafkaを活用したデータパイプラインの実装など、大規模なバックエンドシステムの開発に携わりました。",
+      "Oakhelm Labsでは、バックエンドチームのStaff Software Engineerとして、Python、Rust Langを用いた高性能なサービスの開発と分散システムの最適化に取り組んでいます。"
     ]
   },
   "urn:li:person:xquo1on9": {
@@ -3837,9 +3837,9 @@
     ]
   },
   "urn:li:person:xskxb4r5": {
-    "summary": "Has been building the same product's frontend long enough to have opinions about how the TypeScript types and CSS conventions should evolve. Works mostly in React, and is often the one other engineers ask before introducing a new pattern.",
+    "summary": "シニアフロントエンドエンジニアとして、TypeScript、CSS、Reactを専門とする開発者です。モダンなウェブアプリケーション開発に従事し、スケーラブルで高品質なフロントエンドソリューション構築に貢献しています。",
     "descriptions": [
-      "Owns a chunk of the product's React frontend, writing components in TypeScript and keeping the CSS conventions consistent across a codebase that predates most of the current team. Reviews changes from newer engineers before patterns get introduced widely, and has quietly rewritten some of the oldest screens along the way."
+      "Quantile Labsでシニアフロントエンドエンジニアとして従事。TypeScript、CSS、Reactを活用したフロントエンド開発を主導し、ユーザーインターフェースの設計・実装および最適化に取り組んでいます。"
     ]
   },
   "urn:li:person:xy32paxt": {
